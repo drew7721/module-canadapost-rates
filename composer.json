@@ -1,0 +1,19 @@
+{
+    "name": "drew7721/module-canadapost-rates",
+    "description":"",
+    "keywords": [
+        "magento 2",
+        "magento2"
+    ],
+    "require": {
+    },
+    "type": "magento2-module",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "JustinKase\\CanadaPostRates\\": ""
+        }
+    }
+}
