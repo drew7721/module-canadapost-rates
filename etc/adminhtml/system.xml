@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="carriers">
+            <group id="justinkase_canadapost" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Canada Post Shipping</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="title" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title</label>
+                </field>
+                <field id="request_mode" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Request API Mode</label>
+                    <source_model>JustinKase\CanadaPostRates\Model\Config\Mode</source_model>
+                </field>
+                <field id="username" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>API username</label>
+                    <frontend_class>required-entry validate-alphanum</frontend_class>
+                </field>
+                <field id="password" translate="label" type="obscure" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>API password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <frontend_class>required-entry</frontend_class>
+                </field>
+                <field id="customer_number" translate="label" type="text" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Customer Number</label>
+                    <frontend_class>required-entry</frontend_class>
+                </field>
+                <field id="contract_id" translate="label" type="text" sortOrder="43" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Contract ID</label>
+                </field>
+                <field id="specificerrmsg" translate="label comment" type="textarea" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Displayed Error Message</label>
+                    <comment>An error message to be displayed if the carrier is not available.</comment>
+                </field>
+                <!-- Not needed at the moment.
+                <field id="sallowspecific" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Ship to Applicable Countries</label>
+                    <frontend_class>shipping-applicable-country</frontend_class>
+                    <source_model>Magento\Shipping\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="91" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Ship to Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+                -->
+                <field id="showmethod" translate="label" type="select" sortOrder="92" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Show Method if Not Applicable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_class>shipping-skip-hide</frontend_class>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sort Order</label>
+                    <comment>If multiple carriers enabled, set the order that they are shown in.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
