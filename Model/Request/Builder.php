@@ -77,7 +77,7 @@ class Builder implements BuilderInterface
     public function setWeight($weight)
     {
         if (!empty($weight)) {
-            $this->weight = printf('%3.1f', $weight);
+            $this->weight = sprintf('%3.1f', $weight);
         }
 
         return $this;
