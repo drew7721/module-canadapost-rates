@@ -156,9 +156,11 @@ class Builder implements BuilderInterface
         } else {
             $this->setPostalCode($destinationPostalCode);
 
-            $valid = preg_match(self::POSTAL_COTE_MATCH_PATTERN, $this->postalCode);
-            if ($valid === false) {
-                return false;
+            if ($this->destinationTag === self::DESTINATION_DOMESTIC) {
+                $valid = preg_match(self::POSTAL_COTE_MATCH_PATTERN_CANADA, $this->postalCode);
+                if ($valid === false) {
+                    return false;
+                }
             }
         }
 

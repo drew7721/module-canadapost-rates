@@ -26,7 +26,7 @@ interface BuilderInterface
     const POSTAL_CODE_US_TAG = 'zip-code';
 
 
-    const POSTAL_COTE_MATCH_PATTERN = '/\A[A-Z][\d][A-Z][\d][A-Z][\d]\z/';
+    const POSTAL_COTE_MATCH_PATTERN_CANADA = '/\A[A-Z][\d][A-Z][\d][A-Z][\d]\z/';
     const COUNTRY_CODE_MATCH_PATTERN = '/\A([A-Z]\d){3}\z/';
 
     const MAILING_SCENARIO_TAG = 'mailing-scenario';
