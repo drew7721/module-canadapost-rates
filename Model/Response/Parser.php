@@ -75,7 +75,7 @@ class Parser implements XMLResponseInterface
         ])->getData(self::X_PATH_QUOTES);
 
         if (count($quotes)) {
-            $carrierTitle = (string) $this->settings->getCarrierTitle();
+            $carrierTitle = $this->settings->getCarrierTitle();
             foreach ($quotes as $quote) {
                 if ($this->isValidQuote($quote)) {
                     $result->append(
@@ -83,11 +83,11 @@ class Parser implements XMLResponseInterface
                             'data' => [
                                 'carrier' => \JustinKase\CanadaPostRates\Model\Carrier\CanadaPost::CODE,
                                 'carrier_title' => $carrierTitle,
-                                'method' => (string) $quote[self::X_PATH_SERVICE_CODE],
-                                'method_title' => (string) $quote[self::X_PATH_SERVICE_NAME]
+                                'method' => $quote[self::X_PATH_SERVICE_CODE],
+                                'method_title' => $quote[self::X_PATH_SERVICE_NAME]
                             ]
                         ])->setPrice(
-                            (float) $quote[self::X_PATH_PRICE_DETAILS][self::X_PATH_DUE]
+                            $quote[self::X_PATH_PRICE_DETAILS][self::X_PATH_DUE]
                         )
                     );
                 }
