@@ -151,7 +151,7 @@ class Builder implements BuilderInterface
         }
 
         $destinationPostalCode = $rateRequest->getDestPostcode();
-        if (empty($destinationPostalCode)) {
+        if (empty($destinationPostalCode) && $this->destinationTag !== self::DESTINATION_INTERNATIONAL) {
             return false;
         } else {
             $this->setPostalCode($destinationPostalCode);
