@@ -1,0 +1,14 @@
+Development,Development
+Production,Production
+"Canada Post Shipping","Canada Post Shipping"
+Enabled,Enabled
+Title,Title
+"Request API Mode","Request API Mode"
+"API username","API username"
+"API password","API password"
+"Customer Number","Customer Number"
+"Contract ID","Contract ID"
+"Displayed Error Message","Displayed Error Message"
+"An error message to be displayed if the carrier is not available.","An error message to be displayed if the carrier is not available."
+"Show Method if Not Applicable","Show Method if Not Applicable"
+"Sort Order","Sort Order"
