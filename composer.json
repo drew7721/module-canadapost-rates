@@ -1,9 +1,14 @@
 {
-    "name": "drew7721/module-canadapost-rates",
-    "description":"",
+    "name": "justinkase/module-canadapost-rates",
+    "description":"Magento 2 module to integrate Canada Post shipping rates.",
     "keywords": [
         "magento 2",
-        "magento2"
+        "magento2",
+        "canada post",
+        "shipping",
+        "shipping rates",
+        "canada shipping",
+        "magento shipping module"
     ],
     "require": {
         "guzzle/guzzle": "3.9.*"
@@ -16,5 +21,11 @@
         "psr-4": {
             "JustinKase\\CanadaPostRates\\": ""
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:drew7721/module-canadapost-rates.git"
+        }
+    ]
 }
