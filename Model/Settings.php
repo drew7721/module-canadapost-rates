@@ -7,6 +7,8 @@ namespace JustinKase\CanadaPostRates\Model;
  * Class to supply all the API settings.
  *
  * @author Alex Ghiban <drew7721@gmail.com>
+ *
+ * @deprecated Use the getConfigData method in the Carrier class instead.
  */
 class Settings implements SettingsInterface
 {
