@@ -54,7 +54,6 @@
                 </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>
-                    <comment>If multiple carriers enabled, set the order that they are shown in.</comment>
                 </field>
             </group>
         </section>
