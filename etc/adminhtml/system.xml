@@ -28,10 +28,11 @@
                     <label>Customer Number</label>
                     <frontend_class>required-entry</frontend_class>
                 </field>
-                <!-- todo: move to pro -->
-<!--                <field id="contract_id" translate="label" type="text" sortOrder="43" showInDefault="1" showInWebsite="1" showInStore="0">-->
-<!--                    <label>Contract ID</label>-->
-<!--                </field>-->
+                <field id="allowed_methods" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allowed Methods</label>
+                    <source_model>JustinKase\CanadaPostRates\Model\Config\Methods</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
                 <field id="specificerrmsg" translate="label comment" type="textarea" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Displayed Error Message</label>
                     <comment>An error message to be displayed if the carrier is not available.</comment>

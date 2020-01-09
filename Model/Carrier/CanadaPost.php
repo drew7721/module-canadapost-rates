@@ -105,10 +105,14 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
      * Get allowed shipping methods
      *
      * @return array
-     * @api
+     *
+     * todo: use this to show or not the rates based.
      */
     public function getAllowedMethods()
     {
-        return [];
+        /** @var array $allowedMethods */
+        $configMethods =  $this->getConfigData('allowed_methods');
+        $allowedMethods = explode(',', $configMethods);
+        return $allowedMethods;
     }
 }
