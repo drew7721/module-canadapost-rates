@@ -25,7 +25,10 @@ interface SettingsInterface
 
     /**
      * Mapping for the language codes.
-     * Note that Magento uses `_` not `-` ???
+     *
+     * If the language is not detected, it will use the first entry (en-CA).
+     *
+     * Note that Magento uses `_` not `-`.
      */
     const HEADER_ACCEPTED_LANGUAGE_MAP = [
         'en-CA' => 'en_GB en_US en_CA en_IN en_AU en_NZ en_ZA',
@@ -33,23 +36,11 @@ interface SettingsInterface
     ];
 
     /**
-     * Default language code
-     *
-     * TODO: Make this an admin option.
-     */
-    const DEFAULT_LANGUAGE_CODE = 'en-CA';
-
-    /**
      * Sprint template for the current module configs.
      */
     const CONFIG_PATH = 'carriers/canadapost/%s';
 
     // ADMIN CONFIGS IDS
-    /**
-     * Is Canada Post Shipping active?
-     */
-    const ACTIVE = 'active';
-
     /**
      * The title of the method. Can be changed in the admin.
      */
@@ -76,5 +67,4 @@ interface SettingsInterface
      * Customer number from Canada Post.
      */
     const CUSTOMER_NUMBER = 'customer_number';
-
 }

@@ -38,14 +38,6 @@ class Settings implements SettingsInterface
     /**
      * @return string
      */
-    public function isCanadaPostCarrierActive()
-    {
-        return $this->getConfig(self::ACTIVE);
-    }
-
-    /**
-     * @return string
-     */
     public function getCarrierTitle()
     {
         return $this->getConfig(self::TITLE);
@@ -110,7 +102,7 @@ class Settings implements SettingsInterface
                 return $code;
             }
         }
-        return self::DEFAULT_LANGUAGE_CODE;
+        return array_key_first(self::HEADER_ACCEPTED_LANGUAGE_MAP);
     }
 
     /**
