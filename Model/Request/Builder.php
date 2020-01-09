@@ -77,7 +77,7 @@ class Builder implements BuilderInterface
     public function setWeight($weight)
     {
         if (!empty($weight)) {
-            $this->weight = sprintf('%3.1f', $weight);
+            $this->weight = sprintf('%2.3F', $weight);
         }
 
         return $this;
@@ -129,6 +129,14 @@ class Builder implements BuilderInterface
         return $this;
     }
 
+    /**
+     * Todo: move this to the carrier validation method.
+     *
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
+     *
+     * @return bool
+     * @deprecated  This will be done prior to even building the Carrier.
+     */
     private function isValidRateRequest(\Magento\Quote\Model\Quote\Address\RateRequest $rateRequest)
     {
         $destinationCountryCode = $rateRequest->getDestCountryId();
