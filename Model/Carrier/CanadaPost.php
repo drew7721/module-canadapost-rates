@@ -28,6 +28,10 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
      * @var \JustinKase\CanadaPostRates\Model\Request\Builder
      */
     private $requestBuilder;
+    /**
+     * @var \Magento\Framework\Locale\Resolver
+     */
+    private $localeResolver;
 
     /**
      * CanadaPost constructor.
@@ -37,6 +41,7 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
      * @param \JustinKase\CanadaPostRates\Model\Request\Builder $requestBuilder
      * @param \JustinKase\CanadaPostRates\Model\Response\Parser $responseParser
      * @param \JustinKase\CanadaPostRates\Model\Settings $settings
+     * @param \Magento\Framework\Locale\Resolver $localeResolver
      * @param \Psr\Log\LoggerInterface $logger
      * @param array $data
      */
@@ -46,6 +51,7 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
         \JustinKase\CanadaPostRates\Model\Request\Builder $requestBuilder,
         \JustinKase\CanadaPostRates\Model\Response\Parser $responseParser,
         \JustinKase\CanadaPostRates\Model\Settings $settings,
+        \Magento\Framework\Locale\Resolver $localeResolver,
         \Psr\Log\LoggerInterface $logger,
         array $data = []
     ) {
@@ -53,6 +59,7 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
         $this->settings = $settings;
         $this->responseParser = $responseParser;
         $this->requestBuilder = $requestBuilder;
+        $this->localeResolver = $localeResolver;
     }
 
     /**
@@ -77,7 +84,7 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
         }
 
         if ($requestBody) {
-            $client = $this->requestBuilder->getClientForCanadaPostRateRequest();
+            $client = $this->getClientForCanadaPostRateRequest();
 
             try {
                 /** @var \GuzzleHttp\Psr7\Response $response */
@@ -114,5 +121,83 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
         $configMethods =  $this->getConfigData('allowed_methods');
         $allowedMethods = explode(',', $configMethods);
         return $allowedMethods;
+    }
+
+    /**
+     * Get the rates request Guzzle client.
+     *
+     * //TODO: abstract this in a client provider class extended for the CP apis.
+     * @return \GuzzleHttp\Client
+     */
+    public function getClientForCanadaPostRateRequest()
+    {
+        return (new \GuzzleHttp\Client([
+            'base_uri' => $this->getRatesEndpoint(),
+            'auth' => $this->getAuth(),
+            'headers' => $this->getRequestHeaders(),
+        ]));
+    }
+
+    /**
+     * Returns the proper endpoint based on the set request mode.
+     *
+     * Developer || Production
+     *
+     * @return string
+     */
+    private function getRatesEndpoint()
+    {
+        $domain = self::API_ENDPOINTS[$this->getConfigData(self::REQUEST_MODE)];
+        return sprintf('https://%s/rs/ship/price', $domain);
+    }
+
+    /**
+     * Get auth headers for Guzzle.
+     *
+     * @see http://docs.guzzlephp.org/en/stable/request-options.html#auth
+     *
+     * @return array
+     */
+    private function getAuth()
+    {
+        return [
+            $this->getConfigData(self::USERNAME),
+            $this->getConfigData(self::PASSWORD)
+        ];
+    }
+
+    /**
+     * Get minimal CP headers for the API request.
+     *
+     * @return array
+     */
+    public function getRequestHeaders()
+    {
+        return [
+            'Accept' => RatesClientInterface::RATES_HEADER_CONTENT_TYPE,
+            'Content-Type' => RatesClientInterface::RATES_HEADER_CONTENT_TYPE,
+            'Accept-language' => $this->resolveLocale()
+        ];
+    }
+
+    /**
+     * Return the current locale.
+     *
+     * Check the current locale that needs to be passed in the header to the
+     * request so that Canada Post returns the names in the correct language.
+     *
+     * Choices are FR or EN and current locales have been mapped.
+     *
+     * @return string
+     */
+    private function resolveLocale()
+    {
+        $locale = $this->localeResolver->getLocale();
+        foreach (self::HEADER_ACCEPTED_LANGUAGE_MAP as $code => $haystack) {
+            if (strpos($haystack, $locale) !== false) {
+                return $code;
+            }
+        }
+        return array_key_first(self::HEADER_ACCEPTED_LANGUAGE_MAP);
     }
 }

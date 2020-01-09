@@ -77,7 +77,7 @@ class Parser implements XMLResponseInterface
         if (count($quotes)) {
             $carrierTitle = $this->settings->getCarrierTitle();
             foreach ($quotes as $quote) {
-                if ($this->isValidQuote($quote)) {
+                if ($this->isValidQuoteRespons($quote)) {
                     $result->append(
                         $this->methodFactory->create([
                             'data' => [
@@ -108,7 +108,7 @@ class Parser implements XMLResponseInterface
      *
      * @return bool
      */
-    private function isValidQuote($quote)
+    private function isValidQuoteRespons($quote)
     {
         return is_array($quote)
             && isset($quote[self::X_PATH_SERVICE_CODE])

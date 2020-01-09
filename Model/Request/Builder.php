@@ -40,18 +40,6 @@ class Builder implements BuilderInterface
     }
 
     /**
-     * @return \GuzzleHttp\Client
-     */
-    public function getClientForCanadaPostRateRequest()
-    {
-        return (new \GuzzleHttp\Client([
-            'base_uri' => $this->settings->getEndpoint(),
-            'auth' => $this->settings->getAuth(),
-            'headers' => $this->settings->getRequestHeaders(),
-        ]));
-    }
-
-    /**
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
      *
      * @return bool|string
