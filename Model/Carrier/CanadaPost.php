@@ -3,14 +3,13 @@ namespace JustinKase\CanadaPostRates\Model\Carrier;
 
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Carrier\AbstractCarrier;
-use Magento\Shipping\Model\Carrier\CarrierInterface;
 
 /**
  * Class CanadaPost
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  */
-class CanadaPost extends AbstractCarrier implements CarrierInterface
+class CanadaPost extends AbstractCarrier implements CanadaPostInterface
 {
 
     const CODE = 'justinkase_canadapost';
