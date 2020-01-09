@@ -2,13 +2,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <carriers>
-            <justinkase_canadapost>
+            <canadapost>
                 <model>JustinKase\CanadaPostRates\Model\Carrier\CanadaPost</model>
                 <active>0</active>
                 <title>Canada Post</title>
                 <request_mode>1</request_mode>
                 <password backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
-            </justinkase_canadapost>
+            </canadapost>
         </carriers>
     </default>
 </config>

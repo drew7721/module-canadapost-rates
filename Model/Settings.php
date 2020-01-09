@@ -78,14 +78,6 @@ class Settings implements SettingsInterface
     /**
      * @return string
      */
-    public function getContractId()
-    {
-        return $this->getConfig(self::CONTRACT_ID);
-    }
-
-    /**
-     * @return string
-     */
     public function getSpecificErrorMessage()
     {
         return $this->getConfig(self::SPECIFIC_ERROR_MESSAGE);

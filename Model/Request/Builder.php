@@ -194,13 +194,6 @@ class Builder implements BuilderInterface
             );
         }
 
-        $contractId = $this->settings->getContractId();
-        if (!empty($contractId)) {
-            $scenario->appendChild(
-                $xmlDocument->createElement('contract-id', $contractId)
-            );
-        }
-
         $originalPostalCode = $rateRequest->getOrigPostcode() ?: $rateRequest->getPostcode();
 
         if (empty($originalPostalCode)) {

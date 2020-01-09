@@ -3,7 +3,7 @@
     <type name="Magento\Config\Model\Config\TypePool">
         <arguments>
             <argument name="sensitive" xsi:type="array">
-                <item name="carriers/justinkase_canadapost/password" xsi:type="string">1</item>
+                <item name="carriers/canadapost/password" xsi:type="string">1</item>
             </argument>
         </arguments>
     </type>

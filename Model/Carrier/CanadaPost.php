@@ -116,6 +116,7 @@ class CanadaPost extends AbstractCarrier implements CarrierInterface
      */
     public function getAllowedMethods()
     {
+        //todo: all the allowed methods configured in the admin.
         return [];
     }
 }

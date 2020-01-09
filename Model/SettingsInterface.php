@@ -78,11 +78,6 @@ interface SettingsInterface
     const CUSTOMER_NUMBER = 'customer_number';
 
     /**
-     * Canada Post contract id. Not required.
-     */
-    const CONTRACT_ID = 'contract_id';
-
-    /**
      * Custom error message set in the admin.
      */
     const SPECIFIC_ERROR_MESSAGE = 'specificerrmsg';
