@@ -11,12 +11,6 @@ use Magento\Shipping\Model\Carrier\AbstractCarrier;
  */
 class CanadaPost extends AbstractCarrier implements CanadaPostInterface
 {
-
-    const CODE = 'canadapost';
-
-
-    const RATE_REQUEST_METHOD = 'POST';
-
     /**
      * @var string $_code
      */
@@ -73,13 +67,13 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
     public function collectRates(RateRequest $request)
     {
         $result = false;
-        $requestBody = false;
         // Try to build CP XML Request body from RateRequest data.
         try {
             $requestBody = $this->requestBuilder
                 ->getXMLBodyForCanadaPostRateRequest($request);
         } catch (\Exception $exception) {
             $this->_logger->error($exception->getMessage());
+            $requestBody = false;
         }
 
         if ($requestBody) {
@@ -115,7 +109,6 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
      */
     public function getAllowedMethods()
     {
-        //todo: all the allowed methods configured in the admin.
         return [];
     }
 }
