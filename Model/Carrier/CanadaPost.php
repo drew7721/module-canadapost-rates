@@ -12,7 +12,7 @@ use Magento\Shipping\Model\Carrier\AbstractCarrier;
 class CanadaPost extends AbstractCarrier implements CanadaPostInterface
 {
 
-    const CODE = 'justinkase_canadapost';
+    const CODE = 'canadapost';
 
 
     const RATE_REQUEST_METHOD = 'POST';
