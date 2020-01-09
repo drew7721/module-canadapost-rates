@@ -42,7 +42,7 @@ interface SettingsInterface
     /**
      * Sprint template for the current module configs.
      */
-    const CONFIG_PATH = 'carriers/justinkase_canadapost/%s';
+    const CONFIG_PATH = 'carriers/canadapost/%s';
 
     // ADMIN CONFIGS IDS
     /**
@@ -76,18 +76,5 @@ interface SettingsInterface
      * Customer number from Canada Post.
      */
     const CUSTOMER_NUMBER = 'customer_number';
-
-    /**
-     * Custom error message set in the admin.
-     */
-    const SPECIFIC_ERROR_MESSAGE = 'specificerrmsg';
-
-    /**
-     * Path to the origin shipping postal code.
-     *
-     * This is set in the Magento default shipping configs in the admin.
-     * //TODO: Make this a custom value with a fall back on this if not set.
-     */
-    const ORIGIN_POSTAL_CODE = 'shipping/origin/postcode';
 
 }

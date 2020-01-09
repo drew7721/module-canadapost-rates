@@ -196,10 +196,6 @@ class Builder implements BuilderInterface
 
         $originalPostalCode = $rateRequest->getOrigPostcode() ?: $rateRequest->getPostcode();
 
-        if (empty($originalPostalCode)) {
-            $originalPostalCode = $this->settings->getOriginPostalCode();
-        }
-
         $scenario->appendChild(
             $xmlDocument->createElement(
                 'origin-postal-code',

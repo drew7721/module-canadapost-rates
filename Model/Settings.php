@@ -76,22 +76,6 @@ class Settings implements SettingsInterface
     }
 
     /**
-     * @return string
-     */
-    public function getSpecificErrorMessage()
-    {
-        return $this->getConfig(self::SPECIFIC_ERROR_MESSAGE);
-    }
-
-    /**
-     * @return string
-     */
-    public function getOriginPostalCode()
-    {
-        return $this->scopeConfig->getValue(self::ORIGIN_POSTAL_CODE);
-    }
-
-    /**
      * Returns the proper endpoint based on the set request mode.
      *
      * Developer || Production
