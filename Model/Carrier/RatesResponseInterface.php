@@ -1,12 +1,8 @@
 <?php
-namespace JustinKase\CanadaPostRates\Model\Response;
 
-/**
- * Class XMLResponseInterface
- *
- * @author Alex Ghiban <drew7721@gmail.com>
- */
-interface XMLResponseInterface
+namespace JustinKase\CanadaPostRates\Model\Carrier;
+
+interface RatesResponseInterface
 {
     const X_PATH_QUOTES = 'price-quotes/price-quote';
     const X_PATH_SERVICE_CODE = 'service-code';

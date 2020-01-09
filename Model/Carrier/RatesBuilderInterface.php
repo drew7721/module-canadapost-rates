@@ -1,5 +1,5 @@
 <?php
-namespace JustinKase\CanadaPostRates\Model\Request;
+namespace JustinKase\CanadaPostRates\Model\Carrier;
 
 /**
  * Interface BuilderInterface
@@ -9,7 +9,7 @@ namespace JustinKase\CanadaPostRates\Model\Request;
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  */
-interface BuilderInterface
+interface RatesBuilderInterface
 {
     const XMLNS_VALUE = 'http://www.canadapost.ca/ws/ship/rate-v4';
 
