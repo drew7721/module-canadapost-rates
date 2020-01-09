@@ -2,40 +2,42 @@
 namespace JustinKase\CanadaPostRates\Model\Carrier;
 
 use Magento\Quote\Model\Quote\Address\RateRequest;
-use Magento\Shipping\Model\Carrier\AbstractCarrier;
+use Magento\Shipping\Model\Carrier\AbstractCarrierOnline as Carrier;
 
 /**
  * Class CanadaPost
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  */
-class CanadaPost extends AbstractCarrier implements CanadaPostInterface
+class CanadaPost extends Carrier implements CanadaPostInterface
 {
     /**
      * @var string $_code
      */
     protected $_code = self::CODE;
 
+    protected $allowedMethods = null;
+
     /**
      * @var \Magento\Framework\Locale\Resolver
      */
-    private $localeResolver;
+    protected $localeResolver;
     /**
      * @var \Magento\Shipping\Model\Rate\ResultFactory
      */
-    private $resultFactory;
+    protected $resultFactory;
     /**
      * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
      */
-    private $methodFactory;
+    protected $methodFactory;
     /**
      * @var \Magento\Framework\DataObjectFactory
      */
-    private $dataObjectFactory;
+    protected $dataObjectFactory;
     /**
      * @var \Magento\Framework\Xml\Parser
      */
-    private $parser;
+    protected $parser;
 
     ////
     /// RATES MANDATORY VALUES
@@ -45,15 +47,15 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
      * Weight in Kg. Default 10Kg.
      * @var float $weight
      */
-    private $weight = 10.0;
+    protected $weight = 10.0;
 
-    private $postalCode = null;
+    protected $postalCode = null;
 
-    private $countryCode = null;
+    protected $countryCode = null;
 
-    private $destinationTag = RatesBuilderInterface::DESTINATION_INTERNATIONAL;
+    protected $destinationTag = RatesBuilderInterface::DESTINATION_INTERNATIONAL;
 
-    private $postalCodeTag = RatesBuilderInterface::POSTAL_CODE_TAG;
+    protected $postalCodeTag = RatesBuilderInterface::POSTAL_CODE_TAG;
 
     /**
      * CanadaPost constructor.
@@ -136,15 +138,23 @@ class CanadaPost extends AbstractCarrier implements CanadaPostInterface
      * Get allowed shipping methods
      *
      * @return array
-     *
-     * todo: use this to show or not the rates based.
      */
     public function getAllowedMethods()
     {
-        /** @var array $allowedMethods */
-        $configMethods =  $this->getConfigData('allowed_methods');
-        $allowedMethods = explode(',', $configMethods);
-        return $allowedMethods;
+        if ($this->allowedMethods === null) {
+            $this->allowedMethods = explode(',', $this->getConfigData('allowed_methods'));
+        }
+
+        return $this->allowedMethods ?: [];
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function _doShipmentRequest(\Magento\Framework\DataObject $request)
+    {
+        // TODO: Implement _doShipmentRequest() method.
     }
 
     ////
