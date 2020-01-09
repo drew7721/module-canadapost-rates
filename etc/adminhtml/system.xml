@@ -28,6 +28,11 @@
                     <label>Customer Number</label>
                     <frontend_class>required-entry</frontend_class>
                 </field>
+                <field id="max_package_weight" translate="label comment" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Maximum Package Weight (lbs)</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <comment>For Canada Post the maximum weight of a package is 30kg (~66lbs).</comment>
+                </field>
                 <field id="allowed_methods" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Allowed Methods</label>
                     <source_model>JustinKase\CanadaPostRates\Model\Config\Methods</source_model>
@@ -37,7 +42,6 @@
                     <label>Displayed Error Message</label>
                     <comment>An error message to be displayed if the carrier is not available.</comment>
                 </field>
-                <!-- Not needed at the moment.
                 <field id="sallowspecific" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Ship to Applicable Countries</label>
                     <frontend_class>shipping-applicable-country</frontend_class>
@@ -48,7 +52,6 @@
                     <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                     <can_be_empty>1</can_be_empty>
                 </field>
-                -->
                 <field id="showmethod" translate="label" type="select" sortOrder="92" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Show Method if Not Applicable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
