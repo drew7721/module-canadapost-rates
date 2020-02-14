@@ -25,26 +25,36 @@
                 </field>
                 <field id="username" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>API username</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
                     <frontend_class>required-entry validate-alphanum</frontend_class>
                 </field>
                 <field id="password" translate="label" type="obscure" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>API password</label>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
                     <frontend_class>required-entry</frontend_class>
                 </field>
                 <field id="customer_number" translate="label" type="text" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Customer Number</label>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
                     <frontend_class>required-entry</frontend_class>
                 </field>
-                <field id="max_package_weight" translate="label comment" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
-                    <label>Maximum Package Weight (lbs)</label>
-                    <validate>validate-number validate-zero-or-greater</validate>
-                    <comment>For Canada Post the maximum weight of a package is 30kg (~66lbs).</comment>
-                </field>
-                <field id="allowed_methods" translate="label" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="allowed_methods" translate="label comment" type="multiselect" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
                     <label>Allowed Methods</label>
                     <source_model>JustinKase\CanadaPostRates\Model\Config\Methods</source_model>
                     <can_be_empty>1</can_be_empty>
+                    <comment>Select one or many of the available methods. Not all methods are available in the free module.</comment>
+                </field>
+                <field id="max_package_weight" translate="label comment" type="text" sortOrder="51" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Maximum Package Weight (lbs)</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <comment>For Canada Post the maximum weight of a package is 30kg (~66lbs).</comment>
                 </field>
                 <field id="specificerrmsg" translate="label comment" type="textarea" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Displayed Error Message</label>
