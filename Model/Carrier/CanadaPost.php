@@ -194,7 +194,7 @@ class CanadaPost extends Carrier implements CanadaPostInterface
      */
     protected function _doShipmentRequest(\Magento\Framework\DataObject $request)
     {
-        $randomTracking = 16813343329 . Random::getRandomNumber(36000, 36999);
+        $randomTracking = "not_available_in_free_version";
         $font = \Zend_Pdf_Font::fontWithName(\Zend_Pdf_Font::FONT_HELVETICA);
 
         $pdf = (new \Zend_Pdf());
