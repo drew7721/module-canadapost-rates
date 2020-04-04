@@ -1,7 +1,7 @@
 {
     "name": "justinkase/module-canadapost-rates",
     "description":"Magento 2 module to integrate Canada Post shipping rates.",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "keywords": [
         "magento 2",
         "magento2",
