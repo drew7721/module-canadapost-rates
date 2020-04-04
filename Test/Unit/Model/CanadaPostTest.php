@@ -12,22 +12,13 @@ namespace JustinKase\CanadaPostRates\Test\Unit\Model;
 /**
  * Class CanadaPostTest
  *
+ * TODO: Write tests for module.
+ *
  * @author Alex Ghiban <drew7721@gmail.com>
  *
  * @package JustinKase\CanadaPostRates\Test\Unit\Model
  */
 class CanadaPostTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * Demo test
-     */
-    public function testToFail()
-    {
-        $this->assertEquals('test', 'test');
-    }
 
-    public function testToPass()
-    {
-        $this->assertEquals('test', 'test');
-    }
 }
