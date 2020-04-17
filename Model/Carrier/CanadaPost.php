@@ -179,7 +179,9 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
     public function getAllowedMethods()
     {
         if ($this->allowedMethods === null) {
-            $this->allowedMethods = explode(',', $this->getConfigData('allowed_methods'));
+            $this->allowedMethods = explode(',', $this->getConfigData(
+                GlobalConfigs::GLOBAL_ALLOWED_METHODS
+            ));
         }
 
         return $this->allowedMethods ?: [];

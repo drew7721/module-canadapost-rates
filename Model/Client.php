@@ -10,6 +10,7 @@
 namespace JustinKase\CanadaPostRates\Model;
 
 use JustinKase\CanadaPostRates\Api\ClientConfig;
+use JustinKase\CanadaPostRates\Api\ClientConfigInterface;
 
 /**
  * Class Client
@@ -43,18 +44,18 @@ class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\A
      */
     protected $scopeConfig;
     /**
-     * @var \JustinKase\CanadaPostRates\Api\ClientConfig clientConfig
+     * @var \JustinKase\CanadaPostRates\Api\ClientConfigInterface clientConfig
      */
     private $clientConfig;
 
     /**
      * Client constructor.
      *
-     * @param \JustinKase\CanadaPostRates\Api\ClientConfig $clientConfig
+     * @param \JustinKase\CanadaPostRates\Api\ClientConfigInterface $clientConfig
      * @param array $config
      */
     public function __construct(
-        ClientConfig $clientConfig,
+        ClientConfigInterface $clientConfig,
         array $config = []
     ) {
         $this->clientConfig = $clientConfig;

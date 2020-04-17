@@ -10,7 +10,7 @@
 
 namespace JustinKase\CanadaPostRates\Model;
 
-use JustinKase\CanadaPostRates\Api\ClientConfig;
+use JustinKase\CanadaPostRates\Api\ClientConfigInterface;
 use Magento\Tests\NamingConvention\true\string;
 use JustinKase\CanadaPostRates\Api\GlobalConfigs;
 
@@ -21,7 +21,7 @@ use JustinKase\CanadaPostRates\Api\GlobalConfigs;
  *
  * @package JustinKase\CanadaPostRates\Model
  */
-abstract class AbstractClientConfig implements ClientConfig
+abstract class AbstractClientConfig implements ClientConfigInterface
 {
     /**
      * The configuration that will be returned.
