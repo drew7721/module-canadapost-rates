@@ -10,7 +10,7 @@ good to go.
 You can use this module with your sandbox credentials or your production
 credentials.
 
-Use (this link)[https://sso.epost.ca/sso/lfe/ui/login] to create an account with
+Use [this link](https://sso.epost.ca/sso/lfe/ui/login) to create an account with
 CanadaPost.
 
 ## Author
