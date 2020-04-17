@@ -13,18 +13,19 @@ use JustinKase\CanadaPostRates\Api\Client;
 use Magento\Framework\App\ObjectManager;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Carrier\AbstractCarrierOnline as Carrier;
+use JustinKase\CanadaPostRates\Api\GlobalConfigs;
 
 /**
  * Class CanadaPost
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  */
-class CanadaPost extends Carrier implements CanadaPostInterface
+class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\CarrierInterface
 {
     /**
      * @var string $_code
      */
-    protected $_code = self::CODE;
+    protected $_code = GlobalConfigs::CARRIER_CODE;
 
     protected $allowedMethods = null;
 
@@ -265,7 +266,7 @@ class CanadaPost extends Carrier implements CanadaPostInterface
             [
                 'data' => [
                     'tracking' => $trackingNumber,
-                    'carrier_title' => $this->getConfigData(self::TITLE),
+                    'carrier_title' => $this->getConfigData(GlobalConfigs::GLOBAL_CARRIER_TITLE),
                     //else
                     'url' => "https://www.canadapost.ca/trackweb/en#/details/{$trackingNumber}", //basic
                     'status' => 'Buy our tracking module to have detailed tracking information for each package.',
@@ -300,13 +301,13 @@ class CanadaPost extends Carrier implements CanadaPostInterface
         ])->getData(RatesResponseInterface::X_PATH_QUOTES);
 
         if (count($quotes)) {
-            $carrierTitle = $this->getConfigData(self::TITLE);
+            $carrierTitle = $this->getConfigData(GlobalConfigs::GLOBAL_CARRIER_TITLE);
             foreach ($quotes as $quote) {
                 if ($this->isValidQuoteResponse($quote)) {
                     $result->append(
                         $this->_rateMethodFactory->create([
                             'data' => [
-                                'carrier' => \JustinKase\CanadaPostRates\Model\Carrier\CanadaPost::CODE,
+                                'carrier' => GlobalConfigs::CARRIER_CODE,
                                 'carrier_title' => $carrierTitle,
                                 'method' => $quote[RatesResponseInterface::X_PATH_SERVICE_CODE],
                                 'method_title' => $quote[RatesResponseInterface::X_PATH_SERVICE_NAME]
@@ -493,7 +494,7 @@ class CanadaPost extends Carrier implements CanadaPostInterface
 
         $xmlDocument->appendChild($scenario);
 
-        $customerNumber = $this->getConfigData(self::CUSTOMER_NUMBER);
+        $customerNumber = $this->getConfigData(GlobalConfigs::GLOBAL_CUSTOMER_NUMBER);
         if (!empty($customerNumber)) {
             $scenario->appendChild(
                 $xmlDocument->createElement('customer-number', $customerNumber)

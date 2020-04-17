@@ -101,4 +101,14 @@ interface ClientConfig
      * @return string
      */
     public function getRequestMethod(): string;
+
+    /**
+     * Retrieve the customer number from the configs.
+     *
+     * In some API calls the customer number is part of the Uri suffix. In those
+     * cases, use this method to incorporate it to the Uri suffix.
+     *
+     * @return string
+     */
+    public function getCustomerNumber(): string;
 }
