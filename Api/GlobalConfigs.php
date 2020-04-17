@@ -36,19 +36,19 @@ namespace JustinKase\CanadaPostRates\Api;
 interface GlobalConfigs
 {
     // Global defaults
-    public const CARRIER_CODE = 'canadapost';
+    const CARRIER_CODE = 'canadapost';
 
     // Global admin configs
-    public const GLOBAL_REQUEST_MODE = 'request_mode';
+    const GLOBAL_REQUEST_MODE = 'request_mode';
 
-    public const GLOBAL_CARRIER_TITLE = 'title';
+    const GLOBAL_CARRIER_TITLE = 'title';
 
-    public const GLOBAL_CUSTOMER_NUMBER = 'customer_number';
+    const GLOBAL_CUSTOMER_NUMBER = 'customer_number';
 
-    public const GLOBAL_API_USERNAME = 'username';
+    const GLOBAL_API_USERNAME = 'username';
 
-    public const GLOBAL_API_PASSWORD = 'password';
+    const GLOBAL_API_PASSWORD = 'password';
 
-    public const GLOBAL_ALLOWED_METHODS = 'allowed_methods';
+    const GLOBAL_ALLOWED_METHODS = 'allowed_methods';
 
 }

@@ -9,9 +9,6 @@
 
 namespace JustinKase\CanadaPostRates\Model;
 
-use JustinKase\CanadaPostRates\Api\ClientConfig;
-use JustinKase\CanadaPostRates\Api\ClientConfigInterface;
-
 /**
  * Class Client
  *
@@ -32,7 +29,7 @@ use JustinKase\CanadaPostRates\Api\ClientConfigInterface;
  *
  * @package JustinKase\CanadaPostRates\Model
  */
-class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\Api\Client
+class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\Api\ClientInterface
 {
     /**
      * @var \Magento\Framework\Locale\Resolver localeResolver
@@ -55,7 +52,7 @@ class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\A
      * @param array $config
      */
     public function __construct(
-        ClientConfigInterface $clientConfig,
+        \JustinKase\CanadaPostRates\Api\ClientConfigInterface $clientConfig,
         array $config = []
     ) {
         $this->clientConfig = $clientConfig;

@@ -9,7 +9,6 @@
 
 namespace JustinKase\CanadaPostRates\Model\Carrier;
 
-use JustinKase\CanadaPostRates\Api\Client;
 use Magento\Framework\App\ObjectManager;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Carrier\AbstractCarrierOnline as Carrier;
@@ -22,10 +21,11 @@ use JustinKase\CanadaPostRates\Api\GlobalConfigs;
  */
 class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\CarrierInterface
 {
+    const CODE = '';
     /**
      * @var string $_code
      */
-    protected $_code = GlobalConfigs::CARRIER_CODE;
+    protected $_code = 'canadapost';
 
     protected $allowedMethods = null;
 
@@ -57,7 +57,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
     protected $postalCodeTag = RatesBuilderInterface::POSTAL_CODE_TAG;
 
     /**
-     * @var \JustinKase\CanadaPostRates\Api\Client client
+     * @var \JustinKase\CanadaPostRates\Api\ClientInterface client
      */
     private $client;
 
@@ -81,7 +81,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
      * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
      * @param \Magento\Framework\DataObjectFactory $dataObjectFactory
      * @param \Magento\Framework\Xml\Parser $parser
-     * @param \JustinKase\CanadaPostRates\Api\Client $client
+     * @param \JustinKase\CanadaPostRates\Api\ClientInterface $client
      * @param array $data
      */
     public function __construct(
@@ -102,9 +102,13 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
         \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         \Magento\Framework\DataObjectFactory $dataObjectFactory,
         \Magento\Framework\Xml\Parser $parser,
-        Client $client,
+        \JustinKase\CanadaPostRates\Api\ClientInterface $client,
         array $data = []
     ) {
+        $this->dataObjectFactory = $dataObjectFactory;
+        $this->parser = $parser;
+        $this->client = $client;
+
         parent::__construct(
             $scopeConfig,
             $rateErrorFactory,
@@ -123,9 +127,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
             $stockRegistry,
             $data
         );
-        $this->dataObjectFactory = $dataObjectFactory;
-        $this->parser = $parser;
-        $this->client = $client;
     }
 
     /**

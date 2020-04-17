@@ -11,7 +11,6 @@
 namespace JustinKase\CanadaPostRates\Model;
 
 use JustinKase\CanadaPostRates\Api\ClientConfigInterface;
-use Magento\Tests\NamingConvention\true\string;
 use JustinKase\CanadaPostRates\Api\GlobalConfigs;
 
 /**
@@ -21,8 +20,16 @@ use JustinKase\CanadaPostRates\Api\GlobalConfigs;
  *
  * @package JustinKase\CanadaPostRates\Model
  */
-abstract class AbstractClientConfig implements ClientConfigInterface
+class ClientConfig implements ClientConfigInterface
 {
+    const CONTENT_TYPE = 'set/in/extended/class';
+
+    const ACCEPT = 'set/in/extended/class';
+
+    const URI_SUFFIX = 'set/in/extended/class';
+
+    const METHOD = 'POST';
+
     /**
      * The configuration that will be returned.
      *
@@ -55,25 +62,32 @@ abstract class AbstractClientConfig implements ClientConfigInterface
     }
 
     /**
-     * Implement this to get the suffix of the API call URI.
-     *
-     * @return string
+     * @inheritDoc
      */
-    abstract public function getUriSuffix(): string;
+    public function getRequestHeaders(): array
+    {
+        return [
+            'Accept' => self::ACCEPT,
+            'Content-Type' => self::CONTENT_TYPE,
+            'Accept-language' => $this->resolveLocale()
+        ];
+    }
 
     /**
-     * This will need to be implemented at a request config level.
-     *
-     * @return array
+     * @inheritDoc
      */
-    abstract public function getRequestHeaders(): array;
+    public function getUriSuffix(): string
+    {
+        return self::URI_SUFFIX;
+    }
 
     /**
-     * Implement to return relevant request method. (POST|GET)
-     *
-     * @return string
+     * @inheritDoc
      */
-    abstract public function getRequestMethod(): string;
+    public function getRequestMethod(): string
+    {
+        return self::METHOD;
+    }
 
     /**
      * Return the current locale.
@@ -109,7 +123,7 @@ abstract class AbstractClientConfig implements ClientConfigInterface
         /** @var string $baseUri */
         $baseUri = sprintf(
             self::URI_PRINT_TEMPLATE,
-            AbstractClientConfig::getHost(
+            $this->getHost(
                 (int) $this->getCanadaPostConfig(
                     GlobalConfigs::GLOBAL_REQUEST_MODE
                 )
@@ -129,7 +143,7 @@ abstract class AbstractClientConfig implements ClientConfigInterface
      *
      * @return string
      */
-    public static function getHost(int $environment): string
+    public function getHost(int $environment): string
     {
         return self::API_ENDPOINTS_DOMAINS[$environment];
     }

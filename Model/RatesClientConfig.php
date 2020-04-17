@@ -9,8 +9,6 @@
 
 namespace JustinKase\CanadaPostRates\Model;
 
-use JustinKase\CanadaPostRates\Model\Carrier\RatesClientInterface;
-
 /**
  * Class RatesClientConfig
  *
@@ -20,41 +18,13 @@ use JustinKase\CanadaPostRates\Model\Carrier\RatesClientInterface;
  *
  * @package JustinKase\CanadaPostRates\Model
  */
-class RatesClientConfig extends AbstractClientConfig
+class RatesClientConfig extends ClientConfig
 {
-    public const CONTENT_TYPE = 'application/vnd.cpc.ship.rate-v4+xml';
+    const CONTENT_TYPE = 'application/vnd.cpc.ship.rate-v4+xml';
 
-    public const ACCEPT = 'application/vnd.cpc.ship.rate-v4+xml';
+    const ACCEPT = 'application/vnd.cpc.ship.rate-v4+xml';
 
-    public const URI_SUFFIX = 'rs/ship/price';
+    const URI_SUFFIX = 'rs/ship/price';
 
-    public const METHOD = 'POST';
-
-    /**
-     * @inheritDoc
-     */
-    public function getRequestHeaders(): array
-    {
-        return [
-            'Accept' => self::ACCEPT,
-            'Content-Type' => self::CONTENT_TYPE,
-            'Accept-language' => $this->resolveLocale()
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getUriSuffix(): string
-    {
-        return self::URI_SUFFIX;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRequestMethod(): string
-    {
-        return self::METHOD;
-    }
+    const METHOD = 'POST';
 }
