@@ -25,7 +25,7 @@ use Magento\Tests\NamingConvention\true\string;
  *
  * @package JustinKase\CanadaPostRates\Api
  */
-interface ClientConfig
+interface ClientConfigInterface
 {
     /**
      * Mapping for the language codes.

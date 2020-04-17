@@ -49,4 +49,6 @@ interface GlobalConfigs
 
     public const GLOBAL_API_PASSWORD = 'password';
 
+    public const GLOBAL_ALLOWED_METHODS = 'allowed_methods';
+
 }
