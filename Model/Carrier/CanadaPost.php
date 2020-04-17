@@ -30,11 +30,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
     protected $allowedMethods = null;
 
     /**
-     * @var \Magento\Framework\Locale\Resolver
-     */
-    protected $localeResolver;
-
-    /**
      * @var \Magento\Framework\DataObjectFactory
      */
     protected $dataObjectFactory;
@@ -60,6 +55,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
     protected $destinationTag = RatesBuilderInterface::DESTINATION_INTERNATIONAL;
 
     protected $postalCodeTag = RatesBuilderInterface::POSTAL_CODE_TAG;
+
     /**
      * @var \JustinKase\CanadaPostRates\Api\Client client
      */
@@ -85,7 +81,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
      * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
      * @param \Magento\Framework\DataObjectFactory $dataObjectFactory
      * @param \Magento\Framework\Xml\Parser $parser
-     * @param \Magento\Framework\Locale\Resolver $localeResolver
      * @param \JustinKase\CanadaPostRates\Api\Client $client
      * @param array $data
      */
@@ -107,7 +102,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
         \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         \Magento\Framework\DataObjectFactory $dataObjectFactory,
         \Magento\Framework\Xml\Parser $parser,
-        \Magento\Framework\Locale\Resolver $localeResolver,
         Client $client,
         array $data = []
     ) {
@@ -129,7 +123,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
             $stockRegistry,
             $data
         );
-        $this->localeResolver = $localeResolver;
         $this->dataObjectFactory = $dataObjectFactory;
         $this->parser = $parser;
         $this->client = $client;
