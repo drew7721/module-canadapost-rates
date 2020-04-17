@@ -9,6 +9,8 @@
 
 namespace JustinKase\CanadaPostRates\Model;
 
+use JustinKase\CanadaPostRates\Api\ClientConfig;
+
 /**
  * Class Client
  *
@@ -29,7 +31,67 @@ namespace JustinKase\CanadaPostRates\Model;
  *
  * @package JustinKase\CanadaPostRates\Model
  */
-class Client
+class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\Api\Client
 {
+    /**
+     * @var \Magento\Framework\Locale\Resolver localeResolver
+     */
+    protected $localeResolver;
 
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface scopeConfig
+     */
+    protected $scopeConfig;
+    /**
+     * @var \JustinKase\CanadaPostRates\Api\ClientConfig clientConfig
+     */
+    private $clientConfig;
+
+    /**
+     * Client constructor.
+     *
+     * @param \JustinKase\CanadaPostRates\Api\ClientConfig $clientConfig
+     * @param array $config
+     */
+    public function __construct(
+        ClientConfig $clientConfig,
+        array $config = []
+    ) {
+        $this->clientConfig = $clientConfig;
+        parent::__construct($config + $this->getDefaultConfig());
+    }
+
+    /**
+     * Get the default configs from the ClientConfig provider.
+     * @return array
+     */
+    private function getDefaultConfig()
+    {
+        return [
+            'base_uri' => $this->clientConfig->getRequestUri(),
+            'auth' => $this->clientConfig->getAuthorizationArray(),
+            'headers' => $this->clientConfig->getRequestHeaders(),
+        ];
+    }
+
+    /**
+     * Place request with Canada Post API
+     *
+     * This uses the set config to request the data from the API.
+     *
+     * It's the callers responsability to pass valid data and to treat the
+     * response.
+     *
+     * @param array $options
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function requestCanadaPostApi(array $options = [])
+    {
+        return parent::request(
+            $this->clientConfig->getRequestMethod(),
+            $this->clientConfig->getRequestUri(),
+            $options
+        );
+    }
 }
