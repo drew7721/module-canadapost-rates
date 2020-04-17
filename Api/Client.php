@@ -18,5 +18,15 @@ namespace JustinKase\CanadaPostRates\Api;
  */
 interface Client extends \GuzzleHttp\ClientInterface
 {
-
+    /**
+     * Call the Canada Post Api
+     *
+     * This method must be implemented and used to place the call with the
+     * given options if any required.
+     *
+     * @param array $options
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function requestCanadaPostApi(array $options = []): \Psr\Http\Message\ResponseInterface;
 }
