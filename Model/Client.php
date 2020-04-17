@@ -68,7 +68,6 @@ class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\A
     private function getDefaultConfig()
     {
         return [
-            'base_uri' => $this->clientConfig->getRequestUri(),
             'auth' => $this->clientConfig->getAuthorizationArray(),
             'headers' => $this->clientConfig->getRequestHeaders(),
         ];
