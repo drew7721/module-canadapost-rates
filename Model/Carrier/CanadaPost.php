@@ -9,29 +9,25 @@
 
 namespace JustinKase\CanadaPostRates\Model\Carrier;
 
+use JustinKase\CanadaPostRates\Api\Client;
 use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Math\Random;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Carrier\AbstractCarrierOnline as Carrier;
+use JustinKase\CanadaPostRates\Api\GlobalConfigs;
 
 /**
  * Class CanadaPost
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  */
-class CanadaPost extends Carrier implements CanadaPostInterface
+class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\CarrierInterface
 {
     /**
      * @var string $_code
      */
-    protected $_code = self::CODE;
+    protected $_code = GlobalConfigs::CARRIER_CODE;
 
     protected $allowedMethods = null;
-
-    /**
-     * @var \Magento\Framework\Locale\Resolver
-     */
-    protected $localeResolver;
 
     /**
      * @var \Magento\Framework\DataObjectFactory
@@ -61,6 +57,11 @@ class CanadaPost extends Carrier implements CanadaPostInterface
     protected $postalCodeTag = RatesBuilderInterface::POSTAL_CODE_TAG;
 
     /**
+     * @var \JustinKase\CanadaPostRates\Api\Client client
+     */
+    private $client;
+
+    /**
      * CanadaPost constructor.
      *
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -80,7 +81,7 @@ class CanadaPost extends Carrier implements CanadaPostInterface
      * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
      * @param \Magento\Framework\DataObjectFactory $dataObjectFactory
      * @param \Magento\Framework\Xml\Parser $parser
-     * @param \Magento\Framework\Locale\Resolver $localeResolver
+     * @param \JustinKase\CanadaPostRates\Api\Client $client
      * @param array $data
      */
     public function __construct(
@@ -101,10 +102,11 @@ class CanadaPost extends Carrier implements CanadaPostInterface
         \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         \Magento\Framework\DataObjectFactory $dataObjectFactory,
         \Magento\Framework\Xml\Parser $parser,
-        \Magento\Framework\Locale\Resolver $localeResolver,
+        Client $client,
         array $data = []
     ) {
-        parent::__construct($scopeConfig,
+        parent::__construct(
+            $scopeConfig,
             $rateErrorFactory,
             $logger,
             $xmlSecurity,
@@ -121,9 +123,9 @@ class CanadaPost extends Carrier implements CanadaPostInterface
             $stockRegistry,
             $data
         );
-        $this->localeResolver = $localeResolver;
         $this->dataObjectFactory = $dataObjectFactory;
         $this->parser = $parser;
+        $this->client = $client;
     }
 
     /**
@@ -147,11 +149,9 @@ class CanadaPost extends Carrier implements CanadaPostInterface
         }
 
         if ($requestBody) {
-            $client = $this->getClientForCanadaPostRateRequest();
-
             try {
                 /** @var \GuzzleHttp\Psr7\Response $response */
-                $response = $client->request("POST", '', [
+                $response = $this->client->requestCanadaPostApi([
                     'body' => $requestBody
                 ]);
             } catch (\GuzzleHttp\Exception\GuzzleException $guzzleException) {
@@ -187,7 +187,6 @@ class CanadaPost extends Carrier implements CanadaPostInterface
     ////
     /// ONLINE CARRIER METHODS
     ///
-
 
     /**
      * @inheritDoc
@@ -227,7 +226,8 @@ class CanadaPost extends Carrier implements CanadaPostInterface
      *
      * @return \Magento\Shipping\Model\Tracking\Result
      */
-    public function getTracking($tracking) {
+    public function getTracking($tracking)
+    {
         /** @var \Magento\Shipping\Model\Tracking\Result $result */
         $result = ObjectManager::getInstance()->create(
             \Magento\Shipping\Model\Tracking\Result::class,
@@ -252,98 +252,20 @@ class CanadaPost extends Carrier implements CanadaPostInterface
      *
      * @return \Magento\Shipping\Model\Tracking\Result\Status
      */
-    public function getTrackingDetailsByNumber($trackingNumber) {
+    public function getTrackingDetailsByNumber($trackingNumber)
+    {
         return ObjectManager::getInstance()->create(
             \Magento\Shipping\Model\Tracking\Result\Status::class,
             [
                 'data' => [
                     'tracking' => $trackingNumber,
-                    'carrier_title' => $this->getConfigData(self::TITLE),
+                    'carrier_title' => $this->getConfigData(GlobalConfigs::GLOBAL_CARRIER_TITLE),
                     //else
                     'url' => "https://www.canadapost.ca/trackweb/en#/details/{$trackingNumber}", //basic
                     'status' => 'Buy our tracking module to have detailed tracking information for each package.',
                 ]
             ]
         );
-    }
-
-    //// CLIENT METHODS
-    /**
-     * Get the rates request Guzzle client.
-     *
-     * //TODO: abstract this in a client provider class extended for the CP apis.
-     * @return \GuzzleHttp\Client
-     */
-    private function getClientForCanadaPostRateRequest()
-    {
-        return (new \GuzzleHttp\Client([
-            'base_uri' => $this->getRatesEndpoint(),
-            'auth' => $this->getAuth(),
-            'headers' => $this->getRequestHeaders(),
-        ]));
-    }
-
-    /**
-     * Returns the proper endpoint based on the set request mode.
-     *
-     * Developer || Production
-     *
-     * @return string
-     */
-    private function getRatesEndpoint()
-    {
-        $domain = self::API_ENDPOINTS[$this->getConfigData(self::REQUEST_MODE)];
-        return sprintf('https://%s/rs/ship/price', $domain);
-    }
-
-    /**
-     * Get auth headers for Guzzle.
-     *
-     * @see http://docs.guzzlephp.org/en/stable/request-options.html#auth
-     *
-     * @return array
-     */
-    private function getAuth()
-    {
-        return [
-            $this->getConfigData(self::USERNAME),
-            $this->getConfigData(self::PASSWORD)
-        ];
-    }
-
-    /**
-     * Get minimal CP headers for the API request.
-     *
-     * @return array
-     */
-    private function getRequestHeaders()
-    {
-        return [
-            'Accept' => RatesClientInterface::RATES_HEADER_CONTENT_TYPE,
-            'Content-Type' => RatesClientInterface::RATES_HEADER_CONTENT_TYPE,
-            'Accept-language' => $this->resolveLocale()
-        ];
-    }
-
-    /**
-     * Return the current locale.
-     *
-     * Check the current locale that needs to be passed in the header to the
-     * request so that Canada Post returns the names in the correct language.
-     *
-     * Choices are FR or EN and current locales have been mapped.
-     *
-     * @return string
-     */
-    private function resolveLocale()
-    {
-        $locale = $this->localeResolver->getLocale();
-        foreach (self::HEADER_ACCEPTED_LANGUAGE_MAP as $code => $haystack) {
-            if (strpos($haystack, $locale) !== false) {
-                return $code;
-            }
-        }
-        return array_key_first(self::HEADER_ACCEPTED_LANGUAGE_MAP);
     }
 
     ////
@@ -372,13 +294,13 @@ class CanadaPost extends Carrier implements CanadaPostInterface
         ])->getData(RatesResponseInterface::X_PATH_QUOTES);
 
         if (count($quotes)) {
-            $carrierTitle = $this->getConfigData(self::TITLE);
+            $carrierTitle = $this->getConfigData(GlobalConfigs::GLOBAL_CARRIER_TITLE);
             foreach ($quotes as $quote) {
                 if ($this->isValidQuoteResponse($quote)) {
                     $result->append(
                         $this->_rateMethodFactory->create([
                             'data' => [
-                                'carrier' => \JustinKase\CanadaPostRates\Model\Carrier\CanadaPost::CODE,
+                                'carrier' => GlobalConfigs::CARRIER_CODE,
                                 'carrier_title' => $carrierTitle,
                                 'method' => $quote[RatesResponseInterface::X_PATH_SERVICE_CODE],
                                 'method_title' => $quote[RatesResponseInterface::X_PATH_SERVICE_NAME]
@@ -565,7 +487,7 @@ class CanadaPost extends Carrier implements CanadaPostInterface
 
         $xmlDocument->appendChild($scenario);
 
-        $customerNumber = $this->getConfigData(self::CUSTOMER_NUMBER);
+        $customerNumber = $this->getConfigData(GlobalConfigs::GLOBAL_CUSTOMER_NUMBER);
         if (!empty($customerNumber)) {
             $scenario->appendChild(
                 $xmlDocument->createElement('customer-number', $customerNumber)
