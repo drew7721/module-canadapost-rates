@@ -12,6 +12,7 @@ namespace JustinKase\CanadaPostRates\Model;
 
 use JustinKase\CanadaPostRates\Api\ClientConfig;
 use Magento\Tests\NamingConvention\true\string;
+use JustinKase\CanadaPostRates\Api\GlobalConfigs;
 
 /**
  * Class AbstractClientConfig
@@ -86,12 +87,15 @@ abstract class AbstractClientConfig implements ClientConfig
      */
     public function resolveLocale(): string
     {
+        /** @var string $locale */
         $locale = $this->localeResolver->getLocale();
+
         foreach (self::HEADER_ACCEPTED_LANGUAGE_MAP as $code => $haystack) {
             if (strpos($haystack, $locale) !== false) {
                 return $code;
             }
         }
+
         return array_key_first(self::HEADER_ACCEPTED_LANGUAGE_MAP);
     }
 
@@ -102,11 +106,32 @@ abstract class AbstractClientConfig implements ClientConfig
      */
     public function getRequestUri(): string
     {
-        $baseUri = sprintf('https://%s/', $this->getHost(
-            $this->getCanadaPostConfig('request_mode')
-        ));
+        /** @var string $baseUri */
+        $baseUri = sprintf(
+            self::URI_PRINT_TEMPLATE,
+            AbstractClientConfig::getHost(
+                (int) $this->getCanadaPostConfig(
+                    GlobalConfigs::GLOBAL_REQUEST_MODE
+                )
+            )
+        );
 
         return $baseUri . $this->getUriSuffix();
+    }
+
+    /**
+     * Get the valid host for the request.
+     *
+     * 0 => development
+     * 1 => production
+     *
+     * @param int $environment
+     *
+     * @return string
+     */
+    public static function getHost(int $environment): string
+    {
+        return self::API_ENDPOINTS_DOMAINS[$environment];
     }
 
     /**
@@ -119,8 +144,11 @@ abstract class AbstractClientConfig implements ClientConfig
      */
     public function getAuthorizationArray(): array
     {
-        $apiUsername = $this->getCanadaPostConfig('username');
-        $apiPassword = $this->getCanadaPostConfig('password');
+        /** @var string $apiUsername */
+        $apiUsername = $this->getCanadaPostConfig(GlobalConfigs::GLOBAL_API_USERNAME);
+
+        /** @var string $apiPassword */
+        $apiPassword = $this->getCanadaPostConfig(GlobalConfigs::GLOBAL_API_PASSWORD);
 
         if (empty($apiPassword) || empty($apiUsername)) {
             throw new CanadaPostException(
@@ -135,6 +163,16 @@ abstract class AbstractClientConfig implements ClientConfig
     }
 
     /**
+     * Get the customer number from the config.
+     *
+     * @return string
+     */
+    public function getCustomerNumber(): string
+    {
+        return $this->getCanadaPostConfig(GlobalConfigs::GLOBAL_CUSTOMER_NUMBER);
+    }
+
+    /**
      * Method to get carrier specific config by field name.
      *
      * @param $field
@@ -143,6 +181,9 @@ abstract class AbstractClientConfig implements ClientConfig
      */
     protected function getCanadaPostConfig($field): string
     {
-        return $this->scopeConfig->getValue("carriers/canadapost/{$field}");
+        /** @var string $config */
+        $config = "carriers/" . GlobalConfigs::CARRIER_CODE . "/" . $field;
+
+        return $this->scopeConfig->getValue($config);
     }
 }

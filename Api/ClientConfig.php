@@ -50,6 +50,8 @@ interface ClientConfig
         1 => 'soa-gw.canadapost.ca'
     ];
 
+    public const URI_PRINT_TEMPLATE = 'https://%s/';
+
     /**
      * Return the request Uri that the Client will connect to.
      *

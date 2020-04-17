@@ -45,4 +45,8 @@ interface GlobalConfigs
 
     public const GLOBAL_CUSTOMER_NUMBER = 'customer_number';
 
+    public const GLOBAL_API_USERNAME = 'username';
+
+    public const GLOBAL_API_PASSWORD = 'password';
+
 }
