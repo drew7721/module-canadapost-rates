@@ -18,7 +18,7 @@ namespace JustinKase\CanadaPostRates\Model;
  *
  * @package JustinKase\CanadaPostRates\Model
  */
-class RatesClientConfig extends ClientConfig
+class RatesClientConfig extends AbstractClientConfig
 {
     const CONTENT_TYPE = 'application/vnd.cpc.ship.rate-v4+xml';
 

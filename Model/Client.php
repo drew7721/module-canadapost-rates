@@ -25,6 +25,9 @@ namespace JustinKase\CanadaPostRates\Model;
  * authentication as well as consider the proper endpoint based on the current
  * setting between production and development.
  *
+ * @NOTE There is no default config for this client. You need to supply one from
+ * the di.xml file to change the API endpoint details.
+ *
  * @author Alex Ghiban <drew7721@gmail.com>
  *
  * @package JustinKase\CanadaPostRates\Model

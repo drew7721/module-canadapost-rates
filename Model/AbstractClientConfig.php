@@ -20,7 +20,7 @@ use JustinKase\CanadaPostRates\Api\GlobalConfigs;
  *
  * @package JustinKase\CanadaPostRates\Model
  */
-class ClientConfig implements ClientConfigInterface
+abstract class AbstractClientConfig implements ClientConfigInterface
 {
     /**
      * The configuration that will be returned.
@@ -56,26 +56,17 @@ class ClientConfig implements ClientConfigInterface
     /**
      * @inheritDoc
      */
-    public function getRequestHeaders(): array
-    {
-        return []; //implement in child class.
-    }
+    abstract public function getRequestHeaders(): array;
 
     /**
      * @inheritDoc
      */
-    public function getUriSuffix(): string
-    {
-        return ''; //implement in child class.
-    }
+    abstract public function getUriSuffix(): string;
 
     /**
      * @inheritDoc
      */
-    public function getRequestMethod(): string
-    {
-        return ''; //implement in child class.
-    }
+    abstract public function getRequestMethod(): string;
 
     /**
      * Return the current locale.

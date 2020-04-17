@@ -18,7 +18,6 @@
 
     <!-- Canada Post Rates - Client Config -->
     <preference for="JustinKase\CanadaPostRates\Api\ClientInterface" type="JustinKase\CanadaPostRates\Model\Client"/>
-    <preference for="JustinKase\CanadaPostRates\Api\ClientConfigInterface" type="JustinKase\CanadaPostRates\Model\ClientConfig"/>
 
     <virtualType name="RatesClient" type="JustinKase\CanadaPostRates\Model\Client">
         <arguments>
