@@ -27,4 +27,33 @@ class RatesClientConfig extends ClientConfig
     const URI_SUFFIX = 'rs/ship/price';
 
     const METHOD = 'POST';
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequestHeaders(): array
+    {
+        return [
+            'Accept' => $this::ACCEPT,
+            'Content-Type' => $this::CONTENT_TYPE,
+            'Accept-language' => $this->resolveLocale()
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUriSuffix(): string
+    {
+        return $this::URI_SUFFIX;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getRequestMethod(): string
+    {
+        return $this::METHOD;
+    }
 }

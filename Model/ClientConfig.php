@@ -22,14 +22,6 @@ use JustinKase\CanadaPostRates\Api\GlobalConfigs;
  */
 class ClientConfig implements ClientConfigInterface
 {
-    const CONTENT_TYPE = 'set/in/extended/class';
-
-    const ACCEPT = 'set/in/extended/class';
-
-    const URI_SUFFIX = 'set/in/extended/class';
-
-    const METHOD = 'POST';
-
     /**
      * The configuration that will be returned.
      *
@@ -66,11 +58,7 @@ class ClientConfig implements ClientConfigInterface
      */
     public function getRequestHeaders(): array
     {
-        return [
-            'Accept' => self::ACCEPT,
-            'Content-Type' => self::CONTENT_TYPE,
-            'Accept-language' => $this->resolveLocale()
-        ];
+        return []; //implement in child class.
     }
 
     /**
@@ -78,7 +66,7 @@ class ClientConfig implements ClientConfigInterface
      */
     public function getUriSuffix(): string
     {
-        return self::URI_SUFFIX;
+        return ''; //implement in child class.
     }
 
     /**
@@ -86,7 +74,7 @@ class ClientConfig implements ClientConfigInterface
      */
     public function getRequestMethod(): string
     {
-        return self::METHOD;
+        return ''; //implement in child class.
     }
 
     /**
