@@ -271,6 +271,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
     ////
     /// XML DOCUMENT BUILDER METHODS
     ///
+    //TODO: Move all below to the RatesBuilder Class. This is non-relevant in this class.
     /**
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
      *
