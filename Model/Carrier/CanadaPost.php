@@ -193,6 +193,19 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
      */
     protected function _doShipmentRequest(\Magento\Framework\DataObject $request)
     {
+        return $this->createShipmentRequest($request);
+    }
+
+    /**
+     * Create shipping request with Canada Post.
+     *
+     * This public method allows external implementation of the shipment
+     * creation.
+     *
+     * @param \Magento\Framework\DataObject $request
+     */
+    public function createShipmentRequest(\Magento\Framework\DataObject $request)
+    {
         $randomTracking = "not_available_in_free_version";
         $font = \Zend_Pdf_Font::fontWithName(\Zend_Pdf_Font::FONT_HELVETICA);
 
@@ -202,10 +215,11 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
         $pdf->pages[0]->setFont($font, 12);
 
         $pdf->pages[0]->drawText(
-            __("Buy shipping module to create labels automatically."),
+            __("Buy shipping module to create labels automatically. Visit justinkase.ca for more information."),
             10,
             $pdf->pages[0]->getHeight() - 20
         );
+
         return ObjectManager::getInstance()->create(
             \Magento\Framework\DataObject::class,
             [
@@ -271,6 +285,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
     ////
     /// XML DOCUMENT BUILDER METHODS
     ///
+    //TODO: Move all below to the RatesBuilder Class. This is non-relevant in this class.
     /**
      * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
      *
