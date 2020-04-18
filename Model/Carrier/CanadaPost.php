@@ -13,6 +13,8 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Carrier\AbstractCarrierOnline as Carrier;
 use JustinKase\CanadaPostRates\Api\GlobalConfigs;
+use JustinKase\CanadaPostRates\Model\Rates\RatesBuilderInterface;
+use JustinKase\CanadaPostRates\Model\Rates\RatesResponseInterface;
 
 /**
  * Class CanadaPost

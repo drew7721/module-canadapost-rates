@@ -7,7 +7,7 @@
  * @contact <alex@justinkase.ca>
  */
 
-namespace JustinKase\CanadaPostRates\Model\Carrier;
+namespace JustinKase\CanadaPostRates\Model\Rates;
 
 interface RatesResponseInterface
 {
