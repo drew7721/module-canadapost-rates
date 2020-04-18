@@ -22,13 +22,13 @@ use JustinKase\CanadaPostRates\Model\Client\AbstractClientConfig;
  */
 class RatesClientConfig extends AbstractClientConfig
 {
-    public const CONTENT_TYPE = 'application/vnd.cpc.ship.rate-v4+xml';
+    const CONTENT_TYPE = 'application/vnd.cpc.ship.rate-v4+xml';
 
-    public const ACCEPT = 'application/vnd.cpc.ship.rate-v4+xml';
+    const ACCEPT = 'application/vnd.cpc.ship.rate-v4+xml';
 
-    public const URI_SUFFIX = 'rs/ship/price';
+    const URI_SUFFIX = 'rs/ship/price';
 
-    public const METHOD = 'POST';
+    const METHOD = 'POST';
 
 
     /**

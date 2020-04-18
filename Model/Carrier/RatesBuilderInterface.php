@@ -19,26 +19,26 @@ namespace JustinKase\CanadaPostRates\Model\Carrier;
  */
 interface RatesBuilderInterface
 {
-    public const XMLNS_VALUE = 'http://www.canadapost.ca/ws/ship/rate-v4';
+    const XMLNS_VALUE = 'http://www.canadapost.ca/ws/ship/rate-v4';
 
-    public const DESTINATION_DOMESTIC = 'domestic';
+    const DESTINATION_DOMESTIC = 'domestic';
 
-    public const DESTINATION_USA = 'united-states';
+    const DESTINATION_USA = 'united-states';
 
-    public const DESTINATION_INTERNATIONAL = 'international';
+    const DESTINATION_INTERNATIONAL = 'international';
 
-    public const COUNTRY_CODES = [
+    const COUNTRY_CODES = [
         'CA' => self::DESTINATION_DOMESTIC,
         'US' => self::DESTINATION_USA
     ];
 
-    public const POSTAL_CODE_TAG = 'postal-code';
+    const POSTAL_CODE_TAG = 'postal-code';
 
-    public const POSTAL_CODE_US_TAG = 'zip-code';
+    const POSTAL_CODE_US_TAG = 'zip-code';
 
-    public const POSTAL_COTE_MATCH_PATTERN_CANADA = '/\A[A-Z][\d][A-Z][\d][A-Z][\d]\z/';
+    const POSTAL_COTE_MATCH_PATTERN_CANADA = '/\A[A-Z][\d][A-Z][\d][A-Z][\d]\z/';
 
-    public const COUNTRY_CODE_MATCH_PATTERN = '/\A([A-Z]\d){3}\z/';
+    const COUNTRY_CODE_MATCH_PATTERN = '/\A([A-Z]\d){3}\z/';
 
-    public const MAILING_SCENARIO_TAG = 'mailing-scenario';
+    const MAILING_SCENARIO_TAG = 'mailing-scenario';
 }

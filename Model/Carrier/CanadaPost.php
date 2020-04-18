@@ -23,7 +23,7 @@ use JustinKase\CanadaPostRates\Api\GlobalConfigs;
  */
 class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\CarrierInterface
 {
-    public const CODE = '';
+    const CODE = '';
     /**
      * @var string $_code
      */
