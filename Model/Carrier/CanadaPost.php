@@ -206,7 +206,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
      */
     public function createShipmentRequest(\Magento\Framework\DataObject $request)
     {
-        $randomTracking = "not_available_in_free_version";
+        $notAvailable = "not_available_in_free_version";
         $font = \Zend_Pdf_Font::fontWithName(\Zend_Pdf_Font::FONT_HELVETICA);
 
         $pdf = (new \Zend_Pdf());
@@ -224,7 +224,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
             \Magento\Framework\DataObject::class,
             [
                 'data' => [
-                    'tracking_number' => $randomTracking,
+                    'tracking_number' => $notAvailable,
                     'shipping_label_content' => $pdf->render()
                 ]
             ]
