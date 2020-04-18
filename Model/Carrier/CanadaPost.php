@@ -9,34 +9,29 @@
 
 namespace JustinKase\CanadaPostRates\Model\Carrier;
 
-use JustinKase\CanadaPostRates\Api\Client;
 use Magento\Framework\App\ObjectManager;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Carrier\AbstractCarrierOnline as Carrier;
 use JustinKase\CanadaPostRates\Api\GlobalConfigs;
+use JustinKase\CanadaPostRates\Model\Rates\RatesBuilderInterface;
 
 /**
  * Class CanadaPost
  *
  * @author Alex Ghiban <drew7721@gmail.com>
+ *
+ * @package JustinKase\CanadaPostRates\Model\Carrier
  */
 class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\CarrierInterface
 {
+    const CODE = '';
     /**
      * @var string $_code
      */
-    protected $_code = GlobalConfigs::CARRIER_CODE;
+    protected $_code = 'canadapost';
 
     protected $allowedMethods = null;
 
-    /**
-     * @var \Magento\Framework\DataObjectFactory
-     */
-    protected $dataObjectFactory;
-    /**
-     * @var \Magento\Framework\Xml\Parser
-     */
-    protected $parser;
 
     ////
     /// RATES MANDATORY VALUES
@@ -57,9 +52,13 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
     protected $postalCodeTag = RatesBuilderInterface::POSTAL_CODE_TAG;
 
     /**
-     * @var \JustinKase\CanadaPostRates\Api\Client client
+     * @var \JustinKase\CanadaPostRates\Api\ClientInterface client
      */
     private $client;
+    /**
+     * @var \JustinKase\CanadaPostRates\Model\Rates\RatesResponseParserInterface ratesResponseParser
+     */
+    private $ratesResponseParser;
 
     /**
      * CanadaPost constructor.
@@ -79,9 +78,8 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
      * @param \Magento\Directory\Model\CurrencyFactory $currencyFactory
      * @param \Magento\Directory\Helper\Data $directoryData
      * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
-     * @param \Magento\Framework\DataObjectFactory $dataObjectFactory
-     * @param \Magento\Framework\Xml\Parser $parser
-     * @param \JustinKase\CanadaPostRates\Api\Client $client
+     * @param \JustinKase\CanadaPostRates\Model\Rates\RatesResponseParserInterface $ratesResponseParser
+     * @param \JustinKase\CanadaPostRates\Api\ClientInterface $client
      * @param array $data
      */
     public function __construct(
@@ -100,11 +98,13 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
         \Magento\Directory\Model\CurrencyFactory $currencyFactory,
         \Magento\Directory\Helper\Data $directoryData,
         \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
-        \Magento\Framework\DataObjectFactory $dataObjectFactory,
-        \Magento\Framework\Xml\Parser $parser,
-        Client $client,
+        \JustinKase\CanadaPostRates\Model\Rates\RatesResponseParserInterface $ratesResponseParser,
+        \JustinKase\CanadaPostRates\Api\ClientInterface $client,
         array $data = []
     ) {
+        $this->client = $client;
+        $this->ratesResponseParser = $ratesResponseParser;
+
         parent::__construct(
             $scopeConfig,
             $rateErrorFactory,
@@ -123,9 +123,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
             $stockRegistry,
             $data
         );
-        $this->dataObjectFactory = $dataObjectFactory;
-        $this->parser = $parser;
-        $this->client = $client;
     }
 
     /**
@@ -159,8 +156,8 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
             }
 
             try {
-                /** @var  \Magento\Shipping\Model\Rate\Result $result */
-                $result = $this->getRatesFromResponseBody(
+                $result = $this->ratesResponseParser->getRatesFromCanadaPostXMLResponse(
+                    $this,
                     $response->getBody()->getContents()
                 );
             } catch (\Exception $exception) {
@@ -186,6 +183,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
 
         return $this->allowedMethods ?: [];
     }
+
     ////
     /// ONLINE CARRIER METHODS
     ///
@@ -269,78 +267,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
             ]
         );
     }
-
-    ////
-    /// RATES RESPONSE PARSING METHODS
-    ///
-
-    /**
-     * Parse the response body and create rate results.
-     *
-     * This will parse the XML body from the Canada Post response and will
-     * generate a valid result with all the valid methods.
-     *
-     * @param string $xmlResponse
-     *
-     * @return \Magento\Shipping\Model\Rate\Result
-     * @throws \Magento\Framework\Exception\LocalizedException
-     */
-    public function getRatesFromResponseBody($xmlResponse)
-    {
-        /** @var \Magento\Shipping\Model\Rate\Result $result */
-        $result = $this->_rateFactory->create();
-
-        /** @var array $quotes */
-        $quotes = $this->dataObjectFactory->create([
-            'data' => $this->parser->loadXML($xmlResponse)->xmlToArray()
-        ])->getData(RatesResponseInterface::X_PATH_QUOTES);
-
-        if (count($quotes)) {
-            $carrierTitle = $this->getConfigData(GlobalConfigs::GLOBAL_CARRIER_TITLE);
-            foreach ($quotes as $quote) {
-                if ($this->isValidQuoteResponse($quote)) {
-                    $result->append(
-                        $this->_rateMethodFactory->create([
-                            'data' => [
-                                'carrier' => GlobalConfigs::CARRIER_CODE,
-                                'carrier_title' => $carrierTitle,
-                                'method' => $quote[RatesResponseInterface::X_PATH_SERVICE_CODE],
-                                'method_title' => $quote[RatesResponseInterface::X_PATH_SERVICE_NAME]
-                            ]
-                        ])->setPrice(
-                            $quote[RatesResponseInterface::X_PATH_PRICE_DETAILS][RatesResponseInterface::X_PATH_DUE]
-                        )
-                    );
-                }
-            }
-        } else {
-            $result->setError(true);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Check if the response rate quote.
-     *
-     * Check if the response quote has the mandatory data.
-     *
-     * @param $quote
-     *
-     * @return bool
-     */
-    private function isValidQuoteResponse($quote)
-    {
-        $allowedMethods = $this->getAllowedMethods();
-        $isAllowed = in_array($quote[RatesResponseInterface::X_PATH_SERVICE_CODE], $allowedMethods);
-        return is_array($quote)
-            && isset($quote[RatesResponseInterface::X_PATH_SERVICE_CODE])
-            && $isAllowed
-            && isset($quote[RatesResponseInterface::X_PATH_SERVICE_NAME])
-            && isset($quote[RatesResponseInterface::X_PATH_PRICE_DETAILS])
-            && isset($quote[RatesResponseInterface::X_PATH_PRICE_DETAILS][RatesResponseInterface::X_PATH_DUE]);
-    }
-
 
     ////
     /// XML DOCUMENT BUILDER METHODS

@@ -10,7 +10,7 @@
 namespace JustinKase\CanadaPostRates\Model;
 
 /**
- * Class CandaPostException
+ * Class CanadaPostException
  *
  * Default exception for Canada Post Module.
  *

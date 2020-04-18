@@ -7,10 +7,7 @@
  * @contact <alex@justinkase.ca>
  */
 
-namespace JustinKase\CanadaPostRates\Model;
-
-use JustinKase\CanadaPostRates\Api\ClientConfig;
-use JustinKase\CanadaPostRates\Api\ClientConfigInterface;
+namespace JustinKase\CanadaPostRates\Model\Client;
 
 /**
  * Class Client
@@ -28,11 +25,14 @@ use JustinKase\CanadaPostRates\Api\ClientConfigInterface;
  * authentication as well as consider the proper endpoint based on the current
  * setting between production and development.
  *
+ * @NOTE There is no default config for this client. You need to supply one from
+ * the di.xml file to change the API endpoint details.
+ *
  * @author Alex Ghiban <drew7721@gmail.com>
  *
- * @package JustinKase\CanadaPostRates\Model
+ * @package JustinKase\CanadaPostRates\Model\Client
  */
-class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\Api\Client
+class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\Api\ClientInterface
 {
     /**
      * @var \Magento\Framework\Locale\Resolver localeResolver
@@ -55,7 +55,7 @@ class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\A
      * @param array $config
      */
     public function __construct(
-        ClientConfigInterface $clientConfig,
+        \JustinKase\CanadaPostRates\Api\ClientConfigInterface $clientConfig,
         array $config = []
     ) {
         $this->clientConfig = $clientConfig;
@@ -79,7 +79,7 @@ class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\A
      *
      * This uses the set config to request the data from the API.
      *
-     * It's the callers responsability to pass valid data and to treat the
+     * It's the callers responsibility to pass valid data and to treat the
      * response.
      *
      * @param array $options

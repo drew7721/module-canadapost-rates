@@ -16,7 +16,7 @@ namespace JustinKase\CanadaPostRates\Api;
  *
  * @package JustinKase\CanadaPostRates\Api
  */
-interface Client extends \GuzzleHttp\ClientInterface
+interface ClientInterface extends \GuzzleHttp\ClientInterface
 {
     /**
      * Call the Canada Post Api

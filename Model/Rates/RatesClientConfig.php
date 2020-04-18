@@ -7,9 +7,9 @@
  * @contact <alex@justinkase.ca>
  */
 
-namespace JustinKase\CanadaPostRates\Model;
+namespace JustinKase\CanadaPostRates\Model\Rates;
 
-use JustinKase\CanadaPostRates\Model\Carrier\RatesClientInterface;
+use JustinKase\CanadaPostRates\Model\Client\AbstractClientConfig;
 
 /**
  * Class RatesClientConfig
@@ -18,17 +18,18 @@ use JustinKase\CanadaPostRates\Model\Carrier\RatesClientInterface;
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  *
- * @package JustinKase\CanadaPostRates\Model
+ * @package JustinKase\CanadaPostRates\Model\Rates
  */
 class RatesClientConfig extends AbstractClientConfig
 {
-    public const CONTENT_TYPE = 'application/vnd.cpc.ship.rate-v4+xml';
+    const CONTENT_TYPE = 'application/vnd.cpc.ship.rate-v4+xml';
 
-    public const ACCEPT = 'application/vnd.cpc.ship.rate-v4+xml';
+    const ACCEPT = 'application/vnd.cpc.ship.rate-v4+xml';
 
-    public const URI_SUFFIX = 'rs/ship/price';
+    const URI_SUFFIX = 'rs/ship/price';
 
-    public const METHOD = 'POST';
+    const METHOD = 'POST';
+
 
     /**
      * @inheritDoc
@@ -36,8 +37,8 @@ class RatesClientConfig extends AbstractClientConfig
     public function getRequestHeaders(): array
     {
         return [
-            'Accept' => self::ACCEPT,
-            'Content-Type' => self::CONTENT_TYPE,
+            'Accept' => $this::ACCEPT,
+            'Content-Type' => $this::CONTENT_TYPE,
             'Accept-language' => $this->resolveLocale()
         ];
     }
@@ -47,7 +48,7 @@ class RatesClientConfig extends AbstractClientConfig
      */
     public function getUriSuffix(): string
     {
-        return self::URI_SUFFIX;
+        return $this::URI_SUFFIX;
     }
 
     /**
@@ -55,6 +56,6 @@ class RatesClientConfig extends AbstractClientConfig
      */
     public function getRequestMethod(): string
     {
-        return self::METHOD;
+        return $this::METHOD;
     }
 }
