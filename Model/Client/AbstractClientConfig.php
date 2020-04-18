@@ -8,17 +8,18 @@
  * @contact <alex@justinkase.ca>
  */
 
-namespace JustinKase\CanadaPostRates\Model;
+namespace JustinKase\CanadaPostRates\Model\Client;
 
 use JustinKase\CanadaPostRates\Api\ClientConfigInterface;
 use JustinKase\CanadaPostRates\Api\GlobalConfigs;
+use JustinKase\CanadaPostRates\Model\CanadaPostException;
 
 /**
  * Class AbstractClientConfig
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  *
- * @package JustinKase\CanadaPostRates\Model
+ * @package JustinKase\CanadaPostRates\Model\Client
  */
 abstract class AbstractClientConfig implements ClientConfigInterface
 {
@@ -137,10 +138,8 @@ abstract class AbstractClientConfig implements ClientConfigInterface
      */
     public function getAuthorizationArray(): array
     {
-        /** @var string $apiUsername */
         $apiUsername = $this->getCanadaPostConfig(GlobalConfigs::GLOBAL_API_USERNAME);
 
-        /** @var string $apiPassword */
         $apiPassword = $this->getCanadaPostConfig(GlobalConfigs::GLOBAL_API_PASSWORD);
 
         if (empty($apiPassword) || empty($apiUsername)) {
@@ -174,7 +173,6 @@ abstract class AbstractClientConfig implements ClientConfigInterface
      */
     protected function getCanadaPostConfig($field): string
     {
-        /** @var string $config */
         $config = "carriers/" . GlobalConfigs::CARRIER_CODE . "/" . $field;
 
         return $this->scopeConfig->getValue($config);

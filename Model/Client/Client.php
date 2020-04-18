@@ -7,7 +7,7 @@
  * @contact <alex@justinkase.ca>
  */
 
-namespace JustinKase\CanadaPostRates\Model;
+namespace JustinKase\CanadaPostRates\Model\Client;
 
 /**
  * Class Client
@@ -30,7 +30,7 @@ namespace JustinKase\CanadaPostRates\Model;
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  *
- * @package JustinKase\CanadaPostRates\Model
+ * @package JustinKase\CanadaPostRates\Model\Client
  */
 class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\Api\ClientInterface
 {
@@ -79,7 +79,7 @@ class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\A
      *
      * This uses the set config to request the data from the API.
      *
-     * It's the callers responsability to pass valid data and to treat the
+     * It's the callers responsibility to pass valid data and to treat the
      * response.
      *
      * @param array $options

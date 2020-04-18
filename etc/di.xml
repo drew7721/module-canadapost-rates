@@ -17,11 +17,11 @@
     </type>
 
     <!-- Canada Post Rates - Client Config -->
-    <preference for="JustinKase\CanadaPostRates\Api\ClientInterface" type="JustinKase\CanadaPostRates\Model\Client"/>
+    <preference for="JustinKase\CanadaPostRates\Api\ClientInterface" type="JustinKase\CanadaPostRates\Model\Client\Client"/>
 
-    <virtualType name="RatesClient" type="JustinKase\CanadaPostRates\Model\Client">
+    <virtualType name="RatesClient" type="JustinKase\CanadaPostRates\Model\Client\Client">
         <arguments>
-            <argument name="clientConfig" xsi:type="object">JustinKase\CanadaPostRates\Model\RatesClientConfig</argument>
+            <argument name="clientConfig" xsi:type="object">JustinKase\CanadaPostRates\Model\Rates\RatesClientConfig</argument>
         </arguments>
     </virtualType>
 

@@ -12,7 +12,7 @@ namespace JustinKase\CanadaPostRates\Api;
 /**
  * Interface GlobalConfigs
  *
- * Mainly to use as a global interface to retrive different configurations from
+ * Mainly to use as a global interface to retrieve different configurations from
  * the scope. This can be used during the API call, during the building of the
  * request body or while reading the request response.
  *
@@ -36,19 +36,19 @@ namespace JustinKase\CanadaPostRates\Api;
 interface GlobalConfigs
 {
     // Global defaults
-    const CARRIER_CODE = 'canadapost';
+    public const CARRIER_CODE = 'canadapost';
 
     // Global admin configs
-    const GLOBAL_REQUEST_MODE = 'request_mode';
+    public const GLOBAL_REQUEST_MODE = 'request_mode';
 
-    const GLOBAL_CARRIER_TITLE = 'title';
+    public const GLOBAL_CARRIER_TITLE = 'title';
 
-    const GLOBAL_CUSTOMER_NUMBER = 'customer_number';
+    public const GLOBAL_CUSTOMER_NUMBER = 'customer_number';
 
-    const GLOBAL_API_USERNAME = 'username';
+    public const GLOBAL_API_USERNAME = 'username';
 
-    const GLOBAL_API_PASSWORD = 'password';
+    public const GLOBAL_API_PASSWORD = 'password';
 
-    const GLOBAL_ALLOWED_METHODS = 'allowed_methods';
+    public const GLOBAL_ALLOWED_METHODS = 'allowed_methods';
 
 }

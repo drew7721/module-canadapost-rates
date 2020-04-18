@@ -32,7 +32,7 @@ interface ClientConfigInterface
      *
      * Note that Magento uses `_` not `-`.
      */
-    const HEADER_ACCEPTED_LANGUAGE_MAP = [
+    public const HEADER_ACCEPTED_LANGUAGE_MAP = [
         'en-CA' => 'en_GB en_US en_CA en_IN en_AU en_NZ en_ZA',
         'fr-CA' => 'fr_BE fr_CH fr_FR fr_CA fr_LU'
     ];
@@ -43,12 +43,12 @@ interface ClientConfigInterface
      *
      * @see $self::REQUEST_MODE
      */
-    const API_ENDPOINTS_DOMAINS = [
+    public const API_ENDPOINTS_DOMAINS = [
         0 => 'ct.soa-gw.canadapost.ca',
         1 => 'soa-gw.canadapost.ca'
     ];
 
-    const URI_PRINT_TEMPLATE = 'https://%s/';
+    public const URI_PRINT_TEMPLATE = 'https://%s/';
 
     /**
      * Return the request Uri that the Client will connect to.

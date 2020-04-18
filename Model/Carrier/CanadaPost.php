@@ -18,10 +18,12 @@ use JustinKase\CanadaPostRates\Api\GlobalConfigs;
  * Class CanadaPost
  *
  * @author Alex Ghiban <drew7721@gmail.com>
+ *
+ * @package JustinKase\CanadaPostRates\Model\Carrier
  */
 class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\CarrierInterface
 {
-    const CODE = '';
+    public const CODE = '';
     /**
      * @var string $_code
      */
@@ -160,7 +162,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
             }
 
             try {
-                /** @var  \Magento\Shipping\Model\Rate\Result $result */
                 $result = $this->getRatesFromResponseBody(
                     $response->getBody()->getContents()
                 );
@@ -288,7 +289,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
      */
     public function getRatesFromResponseBody($xmlResponse)
     {
-        /** @var \Magento\Shipping\Model\Rate\Result $result */
         $result = $this->_rateFactory->create();
 
         /** @var array $quotes */

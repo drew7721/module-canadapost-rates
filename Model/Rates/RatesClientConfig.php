@@ -7,7 +7,9 @@
  * @contact <alex@justinkase.ca>
  */
 
-namespace JustinKase\CanadaPostRates\Model;
+namespace JustinKase\CanadaPostRates\Model\Rates;
+
+use JustinKase\CanadaPostRates\Model\Client\AbstractClientConfig;
 
 /**
  * Class RatesClientConfig
@@ -16,17 +18,17 @@ namespace JustinKase\CanadaPostRates\Model;
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  *
- * @package JustinKase\CanadaPostRates\Model
+ * @package JustinKase\CanadaPostRates\Model\Rates
  */
 class RatesClientConfig extends AbstractClientConfig
 {
-    const CONTENT_TYPE = 'application/vnd.cpc.ship.rate-v4+xml';
+    public const CONTENT_TYPE = 'application/vnd.cpc.ship.rate-v4+xml';
 
-    const ACCEPT = 'application/vnd.cpc.ship.rate-v4+xml';
+    public const ACCEPT = 'application/vnd.cpc.ship.rate-v4+xml';
 
-    const URI_SUFFIX = 'rs/ship/price';
+    public const URI_SUFFIX = 'rs/ship/price';
 
-    const METHOD = 'POST';
+    public const METHOD = 'POST';
 
 
     /**
