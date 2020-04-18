@@ -16,6 +16,9 @@
         </arguments>
     </type>
 
+    <!-- Rates Preferences -->
+    <preference for="JustinKase\CanadaPostRates\Model\Rates\RatesResponseParserInterface" type="JustinKase\CanadaPostRates\Model\Rates\RatesResponseParserParser"/>
+
     <!-- Canada Post Rates - Client Config -->
     <preference for="JustinKase\CanadaPostRates\Api\ClientInterface" type="JustinKase\CanadaPostRates\Model\Client\Client"/>
 
