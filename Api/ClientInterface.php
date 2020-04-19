@@ -26,7 +26,9 @@ interface ClientInterface extends \GuzzleHttp\ClientInterface
      *
      * @param array $options
      *
+     * @param null $ur
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function requestCanadaPostApi(array $options = []): \Psr\Http\Message\ResponseInterface;
+    public function requestCanadaPostApi(array $options = [], $ur = null): \Psr\Http\Message\ResponseInterface;
 }

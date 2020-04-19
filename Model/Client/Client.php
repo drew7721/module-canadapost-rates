@@ -84,13 +84,15 @@ class Client extends \GuzzleHttp\Client implements \JustinKase\CanadaPostRates\A
      *
      * @param array $options
      *
+     * @param null|string $uri
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function requestCanadaPostApi(array $options = []): \Psr\Http\Message\ResponseInterface
+    public function requestCanadaPostApi(array $options = [], $uri = null): \Psr\Http\Message\ResponseInterface
     {
         return parent::request(
             $this->clientConfig->getRequestMethod(),
-            $this->clientConfig->getRequestUri(),
+            $uri ?? $this->clientConfig->getRequestUri(),
             $options
         );
     }
