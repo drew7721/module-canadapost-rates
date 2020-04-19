@@ -206,7 +206,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
      */
     public function createShipmentRequest(\Magento\Framework\DataObject $request)
     {
-        $notAvailable = "not_available_in_free_version";
+        $notAvailable = "Add-on module required.";
         $font = \Zend_Pdf_Font::fontWithName(\Zend_Pdf_Font::FONT_HELVETICA);
 
         $pdf = (new \Zend_Pdf());
@@ -215,7 +215,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
         $pdf->pages[0]->setFont($font, 12);
 
         $pdf->pages[0]->drawText(
-            __("Buy shipping module to create labels automatically. Visit justinkase.ca for more information."),
+            __("Automatic shipment creation unavailable. You need to install a shipment add-on module. Visit justinkase.ca for more information."),
             10,
             $pdf->pages[0]->getHeight() - 20
         );
