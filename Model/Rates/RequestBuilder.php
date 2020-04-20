@@ -9,31 +9,24 @@
 
 namespace JustinKase\CanadaPostRates\Model\Rates;
 
-use JustinKase\CanadaPostRates\Api\GlobalConfigs;
+use JustinKase\CanadaPostRates\Model\Xml\AbstractBuilder;
 
 /**
  * Class RequestBuilder
  *
- * TODO: Move code from the Carrier to this class for building the rates request
  * XML document.
  *
  * @author Alex Ghiban <drew7721@gmail.com>
  *
  * @package JustinKase\CanadaPostRates\Model\Rates
  */
-class RequestBuilder implements RatesBuilderInterface
+class RequestBuilder extends AbstractBuilder implements RatesBuilderInterface
 {
-
-    public function getCanadaPostRatesRequestXML(
-        \Magento\Shipping\Model\Carrier\AbstractCarrierInterface $carrier,
-        \Magento\Quote\Model\Quote\Address\RateRequest $request
-    ): string {
-        // TODO: Implement.
-    }
-
-    public function isRequestValidForCanadaPostRates(
-        \Magento\Quote\Model\Quote\Address\RateRequest $request
-    ): bool {
-        // TODO: Implement isRequestValidForCanadaPostRates() method.
+    /**
+     * @param \DOMElement $mainContainer
+     */
+    protected function buildContent(\DOMElement $mainContainer): void
+    {
+        // TODO: Implement buildContent() method.
     }
 }
