@@ -26,9 +26,12 @@ interface XmlBuilderInterface
 
     /**
      * Main
+     *
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
+     *
      * @return string
      */
-    public function build();
+    public function build(\Magento\Quote\Model\Quote\Address\RateRequest $rateRequest);
 
     /**
      * Returns a new Element.

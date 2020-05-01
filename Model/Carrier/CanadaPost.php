@@ -9,6 +9,7 @@
 
 namespace JustinKase\CanadaPostRates\Model\Carrier;
 
+use JustinKase\CanadaPostRates\Model\Rates\RequestBuilder;
 use Magento\Framework\App\ObjectManager;
 use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Carrier\AbstractCarrierOnline as Carrier;
@@ -24,7 +25,7 @@ use JustinKase\CanadaPostRates\Model\Rates\RatesBuilderInterface;
  */
 class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\CarrierInterface
 {
-    const CODE = '';
+    const CODE = 'canadapost';
     /**
      * @var string $_code
      */
@@ -59,6 +60,10 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
      * @var \JustinKase\CanadaPostRates\Model\Rates\RatesResponseParserInterface ratesResponseParser
      */
     private $ratesResponseParser;
+    /**
+     * @var \JustinKase\CanadaPostRates\Model\Rates\RequestBuilder requestBuilder
+     */
+    private $requestBuilder;
 
     /**
      * CanadaPost constructor.
@@ -80,6 +85,7 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
      * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
      * @param \JustinKase\CanadaPostRates\Model\Rates\RatesResponseParserInterface $ratesResponseParser
      * @param \JustinKase\CanadaPostRates\Api\ClientInterface $client
+     * @param \JustinKase\CanadaPostRates\Model\Rates\RequestBuilder $requestBuilder
      * @param array $data
      */
     public function __construct(
@@ -100,10 +106,12 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
         \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
         \JustinKase\CanadaPostRates\Model\Rates\RatesResponseParserInterface $ratesResponseParser,
         \JustinKase\CanadaPostRates\Api\ClientInterface $client,
+        RequestBuilder $requestBuilder,
         array $data = []
     ) {
         $this->client = $client;
         $this->ratesResponseParser = $ratesResponseParser;
+        $this->requestBuilder = $requestBuilder;
 
         parent::__construct(
             $scopeConfig,
@@ -137,9 +145,8 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
     public function collectRates(RateRequest $request)
     {
         $result = false;
-        // Try to build CP XML Request body from RateRequest data.
         try {
-            $requestBody = $this->getXMLBodyForCanadaPostRateRequest($request);
+            $requestBody = $this->requestBuilder->build($request);
         } catch (\Exception $exception) {
             $this->_logger->error($exception->getMessage());
             $requestBody = false;
@@ -282,28 +289,6 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
         );
     }
 
-    ////
-    /// XML DOCUMENT BUILDER METHODS
-    ///
-    //TODO: Move all below to the RatesBuilder Class. This is non-relevant in this class.
-    /**
-     * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
-     *
-     * @return bool|string
-     * @throws \Exception
-     */
-    public function getXMLBodyForCanadaPostRateRequest(
-        \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
-    ) {
-        $result = false;
-
-        if ($this->isValidRateRequest($rateRequest)) {
-            $result = $this->buildXmlRequest($rateRequest);
-        }
-
-        return $result;
-    }
-
     /**
      * @param null $weight
      *
@@ -316,163 +301,5 @@ class CanadaPost extends Carrier implements \Magento\Shipping\Model\Carrier\Carr
         }
 
         return $this;
-    }
-
-    /**
-     * Set the postal code.
-     *
-     * API requires this to be uppercase and no special chars.
-     *
-     * @param string $postalCode
-     *
-     * @return $this
-     */
-    public function setPostalCode($postalCode)
-    {
-        $this->postalCode = preg_replace(
-            '/\W/',
-            '',
-            strtoupper($postalCode)
-        );
-
-        return $this;
-    }
-
-    /**
-     * Set the country code.
-     *
-     * This needs to be a valid 2 uppercase letters country code.
-     *
-     * The request is build differently based on this.
-     *
-     * US => united-states
-     * CA => domestic
-     * OTHER => international
-     *
-     * @param string $countryCode
-     *
-     * @return $this
-     */
-    public function setCountryCode($countryCode)
-    {
-        $this->countryCode = preg_replace(
-            '/(\W|\d)/',
-            '',
-            strtoupper($countryCode)
-        );
-
-        return $this;
-    }
-
-    /**
-     * Todo: move this to the carrier validation method.
-     *
-     * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
-     *
-     * @return bool
-     * @deprecated  This will be done prior to even building the Carrier.
-     */
-    private function isValidRateRequest(\Magento\Quote\Model\Quote\Address\RateRequest $rateRequest)
-    {
-        $destinationCountryCode = $rateRequest->getDestCountryId();
-        if (empty($destinationCountryCode)) {
-            return false;
-        } else {
-            $this->setCountryCode($destinationCountryCode);
-            if (array_key_exists($this->countryCode, RatesBuilderInterface::COUNTRY_CODES)) {
-                $this->destinationTag = RatesBuilderInterface::COUNTRY_CODES[$this->countryCode];
-            }
-
-            $valid = preg_match(RatesBuilderInterface::COUNTRY_CODE_MATCH_PATTERN, $this->postalCode);
-            if ($valid === false) {
-                return false;
-            }
-
-            if ($this->destinationTag === RatesBuilderInterface::DESTINATION_USA) {
-                $this->postalCodeTag = RatesBuilderInterface::POSTAL_CODE_US_TAG;
-            }
-        }
-
-        $destinationPostalCode = $rateRequest->getDestPostcode();
-        if (empty($destinationPostalCode) && $this->destinationTag !== RatesBuilderInterface::DESTINATION_INTERNATIONAL) {
-            return false;
-        } else {
-            $this->setPostalCode($destinationPostalCode);
-
-            if ($this->destinationTag === RatesBuilderInterface::DESTINATION_DOMESTIC) {
-                $valid = preg_match(RatesBuilderInterface::POSTAL_COTE_MATCH_PATTERN_CANADA, $this->postalCode);
-                if ($valid === false) {
-                    return false;
-                }
-            }
-        }
-
-        $this->setWeight($rateRequest->getPackageWeight());
-
-        return true;
-    }
-
-    /**
-     * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
-     *
-     * @return string
-     * @throws \Exception
-     */
-    private function buildXmlRequest(\Magento\Quote\Model\Quote\Address\RateRequest $rateRequest)
-    {
-        $xmlDocument = new \DOMDocument('1.0', 'UTF-8');
-        $scenario = $xmlDocument->createElement(RatesBuilderInterface::MAILING_SCENARIO_TAG);
-
-        $scenario->setAttribute(
-            'xmlns',
-            RatesBuilderInterface::XMLNS_VALUE
-        );
-
-        $xmlDocument->appendChild($scenario);
-
-        $customerNumber = $this->getConfigData(GlobalConfigs::GLOBAL_CUSTOMER_NUMBER);
-        if (!empty($customerNumber)) {
-            $scenario->appendChild(
-                $xmlDocument->createElement('customer-number', $customerNumber)
-            );
-        }
-
-        $originalPostalCode = $rateRequest->getOrigPostcode() ?: $rateRequest->getPostcode();
-
-        $scenario->appendChild(
-            $xmlDocument->createElement(
-                'origin-postal-code',
-                $originalPostalCode
-            )
-        );
-
-        $parcel = $xmlDocument->createElement('parcel-characteristics');
-
-        $parcel->appendChild(
-            $xmlDocument->createElement('weight', $this->weight)
-        );
-        $scenario->appendChild($parcel);
-
-        $destination = $xmlDocument->createElement('destination');
-        $destinationType = $xmlDocument->createElement($this->destinationTag);
-        $destination->appendChild($destinationType);
-
-        $destinationPostalCode = $xmlDocument->createElement(
-            $this->postalCodeTag,
-            $this->postalCode
-        );
-        $destinationType->appendChild($destinationPostalCode);
-
-        if ($this->destinationTag === RatesBuilderInterface::DESTINATION_INTERNATIONAL) {
-            $destinationCountryCode = $xmlDocument->createElement(
-                'country-code',
-                $this->countryCode
-            );
-            $destinationType->appendChild($destinationCountryCode);
-        }
-
-        $scenario->appendChild($destination);
-
-        return $xmlDocument->saveXML();
     }
 }

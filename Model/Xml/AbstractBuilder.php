@@ -10,6 +10,8 @@
 namespace JustinKase\CanadaPostRates\Model\Xml;
 
 use JustinKase\CanadaPostRates\Api\XmlBuilderInterface;
+use JustinKase\CanadaPostRates\Model\Carrier\CanadaPost;
+use Magento\Quote\Model\Quote\Address\RateRequest;
 
 /**
  * Class AbstractBuilder
@@ -28,22 +30,32 @@ abstract class AbstractBuilder implements XmlBuilderInterface
 
     /** @var string $mainElementXmlns */
     protected $mainElementXmlns = null;
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface scopeConfig
+     */
+    private $scopeConfig;
 
     /**
      * AbstractBuilder constructor.
+     *
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      */
-    public function __construct()
-    {
+    public function __construct(
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+    ) {
+        $this->scopeConfig = $scopeConfig;
         $this->document = new \DOMDocument('1.0', 'UTF-8');
     }
 
     /**
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
+     *
      * @return string
      */
-    public function build()
+    public function build(RateRequest $rateRequest)
     {
         $mainContainer = $this->createMainContentElement();
-        $this->buildContent($mainContainer);
+        $this->buildContent($mainContainer, $rateRequest);
 
         return (string) $this;
     }
@@ -54,8 +66,12 @@ abstract class AbstractBuilder implements XmlBuilderInterface
      * Extend this to build all XML request for the Canada Post API.
      *
      * @param \DOMElement $mainContainer
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
      */
-    abstract protected function buildContent(\DOMElement $mainContainer): void;
+    abstract protected function buildContent(
+        \DOMElement $mainContainer,
+        \Magento\Quote\Model\Quote\Address\RateRequest $rateRequest
+    ): void;
 
     /**
      * Creates main content Node.
@@ -65,7 +81,7 @@ abstract class AbstractBuilder implements XmlBuilderInterface
      *
      * @return \DOMElement
      */
-    protected function createMainContentElement()
+    private function createMainContentElement()
     {
         $mainContent = $this->element(
             $this->mainElementName ?? self::DEFAULT_MAIN_CONTENT_ELEMENT_NAME
@@ -130,4 +146,20 @@ abstract class AbstractBuilder implements XmlBuilderInterface
         return round($pounds / 2.2046, 3);
     }
 
+    /**
+     * Get Canada Post Config Data
+     *
+     * @param $field
+     *
+     * @return mixed
+     */
+    public function getConfigData($field)
+    {
+        $path = 'carriers/' . CanadaPost::CODE . '/' . $field;
+
+        return $this->scopeConfig->getValue(
+            $path,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+    }
 }
